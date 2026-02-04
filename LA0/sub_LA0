@@ -1,0 +1,19 @@
+#!/bin/bash
+#SBATCH --job-name=test_LA0
+#SBATCH --partition=batch
+#SBATCH --nodes=2
+#SBATCH --ntasks-per-node=1
+#SBATCH --time=00:00:10
+#SBATCH --output=test_LA0.%j.out
+#SBATCH --export=ALL
+
+echo "Fortran"
+srun ./host.x
+srun ./pass.x
+srun ./dot.x
+
+echo
+echo "C"
+srun ./host.cx
+srun ./pass.cx
+srun ./dot.cx
