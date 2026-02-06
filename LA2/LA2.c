@@ -19,9 +19,8 @@ int main(int argc, char **argv){
 
     long long size = 1024*1024*1024;
 
-    int *numbers = (int*) malloc(size*sizeOf(int));
+    int *numbers = (int*)malloc(size*sizeof(int));
 
-    printf("Rank: %d, Number: %d\n",rank,number);
     if(rank==0){
         numbers[0] = 0;
         for(int i = 1; i<numranks; i++){
