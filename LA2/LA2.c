@@ -17,9 +17,9 @@ int main(int argc, char **argv){
     MPI_Comm_size(MPI_COMM_WORLD,&numranks);
     MPI_Comm_rank(MPI_COMM_WORLD,&rank);
 
-    long long size = 1024*1024*1024;
+    long long size = 1024*1024*1024/4;
 
-    int *numbers = (int*)malloc(size);
+    int *numbers = (int*)malloc(size*sizeof(int));
 
     //ping pong 
 
