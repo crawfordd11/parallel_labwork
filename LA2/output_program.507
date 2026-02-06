@@ -1,0 +1,6 @@
+slurmstepd-debug1: error: *** STEP 507.0 ON debug1 CANCELLED AT 2026-02-06T08:40:29 ***
+srun: Job step aborted: Waiting up to 32 seconds for job step to finish.
+srun: error: debug1: task 0: Exited with exit code 6
+srun: error: debug4: task 3: Killed
+srun: error: debug2: task 1: Killed
+srun: error: debug3: task 2: Killed
