@@ -1,11 +1,17 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <mpi.h>
+#include <time.h>
 
 int main(int argc, char **argv){
     int numranks;
     int rank;
     MPI_Status stat;
+
+    clock_t start_time, end_time;
+    double cpu_time_used;
+
+    start_time = clock();
 
     MPI_Init(&argc, &argv);
     MPI_Comm_size(MPI_COMM_WORLD,&numranks);
@@ -19,7 +25,7 @@ int main(int argc, char **argv){
         MPI_Recv(&number,1,MPI_INT,1,0,MPI_COMM_WORLD,&stat);
         printf("Rank %d, Number: %d\n",rank,number);
     }
-    if(rank==1){
+    else{
         MPI_Recv(&number,1,MPI_INT,0,0,MPI_COMM_WORLD,&stat);
         printf("Rank %d, Number: %d\n",rank,number);
         number++;
@@ -27,6 +33,9 @@ int main(int argc, char **argv){
     }
 
     MPI_Finalize();
+
+    cpu_time_used = ((double) (end_time - start_time)) / CLOCKS_PER_SEC;
+    printf("Execution time: %f seconds\n" cpu_time_used);
 
     return 0;    
 }
