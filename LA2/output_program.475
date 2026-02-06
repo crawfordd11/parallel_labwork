@@ -1,0 +1,10 @@
+Rank: 1, Number: 0
+Rank 1, Number: 100
+Execution time: 140720308.481043 seconds
+Rank: 0, Number: 0
+Rank 0, Number: 101
+Execution time: 140733193.382484 seconds
+slurmstepd-debug1: error: *** JOB 475 ON debug1 CANCELLED AT 2026-02-06T08:31:15 DUE TO TIME LIMIT ***
+srun: Job step aborted: Waiting up to 32 seconds for job step to finish.
+srun: error: debug4: task 3: Terminated
+srun: error: debug3: task 2: Terminated
