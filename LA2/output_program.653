@@ -1,0 +1,13 @@
+[sc9][[1959,0],1][btl_tcp_frag.c:226:mca_btl_tcp_frag_recv] mca_btl_tcp_frag_recv: readv error (0x70a1ca1f7138, 1073773272)
+	Bad address(1)
+
+srun: Job step aborted: Waiting up to 32 seconds for job step to finish.
+slurmstepd-sc8: error: *** STEP 653.0 ON sc8 CANCELLED AT 2026-02-06T10:13:07 ***
+srun: error: sc11: task 3: Killed
+srun: error: sc13: task 5: Killed
+srun: error: sc12: task 4: Killed
+srun: error: sc10: task 2: Killed
+srun: error: sc14: task 6: Killed
+srun: error: sc8: task 0: Exited with exit code 14
+slurmstepd-sc8: error: *** STEP 653.0 ON sc8 CANCELLED AT 2026-02-06T10:13:07 ***
+srun: error: sc9: task 1: Exited with exit code 14

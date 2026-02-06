@@ -1,0 +1,16 @@
+[sc4][[45683,0],0][btl_tcp_frag.c:119:mca_btl_tcp_frag_send] mca_btl_tcp_frag_send: writev error (0x72e45001ed78, 1073610392)
+	Bad address(1)
+
+[sc5][[45683,0],1][btl_tcp_frag.c:226:mca_btl_tcp_frag_recv] mca_btl_tcp_frag_recv: readv error (0x771f6a1ff8f8, 1073738520)
+	Bad address(1)
+
+slurmstepd-sc4: error: *** STEP 654.0 ON sc4 CANCELLED AT 2026-02-06T10:13:38 ***
+srun: Job step aborted: Waiting up to 32 seconds for job step to finish.
+srun: error: sc8: task 4: Killed
+srun: error: sc9: task 5: Killed
+srun: error: sc6: task 2: Killed
+srun: error: sc7: task 3: Killed
+srun: error: sc11: task 7: Killed
+srun: error: sc4: task 0: Exited with exit code 14
+srun: error: sc10: task 6: Killed
+srun: error: sc5: task 1: Killed

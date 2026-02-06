@@ -1,0 +1,11 @@
+[sc1][[13460,0],0][btl_tcp_frag.c:119:mca_btl_tcp_frag_send] mca_btl_tcp_frag_send: writev error (0x7ea17401ed90, 1073610368)
+	Bad address(1)
+
+[sc2:1020800] *** Process received signal ***
+[sc2:1020800] Signal: Segmentation fault (11)
+[sc2:1020800] Signal code: Address not mapped (1)
+[sc2:1020800] Failing at address: 0x7ea17b18db10
+srun: Job step aborted: Waiting up to 32 seconds for job step to finish.
+srun: error: sc1: task 0: Exited with exit code 14
+slurmstepd-sc1: error: *** STEP 647.0 ON sc1 CANCELLED AT 2026-02-06T10:11:41 ***
+srun: error: sc2: task 1: Segmentation fault (core dumped)

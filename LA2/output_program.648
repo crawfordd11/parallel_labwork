@@ -1,0 +1,34 @@
+malloc(): unaligned tcache chunk detected
+[sc5:1014984] *** Process received signal ***
+[sc5:1014984] Signal: Aborted (6)
+[sc5:1014984] Signal code:  (-6)
+[sc5:1014984] [ 0] /lib/x86_64-linux-gnu/libc.so.6(+0x45330)[0x763408a45330]
+[sc5:1014984] [ 1] /lib/x86_64-linux-gnu/libc.so.6(pthread_kill+0x11c)[0x763408a9eb2c]
+[sc5:1014984] [ 2] /lib/x86_64-linux-gnu/libc.so.6(gsignal+0x1e)[0x763408a4527e]
+[sc5:1014984] [ 3] /lib/x86_64-linux-gnu/libc.so.6(abort+0xdf)[0x763408a288ff]
+[sc5:1014984] [ 4] /lib/x86_64-linux-gnu/libc.so.6(+0x297b6)[0x763408a297b6]
+[sc5:1014984] [ 5] /lib/x86_64-linux-gnu/libc.so.6(+0xa8ff5)[0x763408aa8ff5]
+[sc5:1014984] [ 6] /lib/x86_64-linux-gnu/libc.so.6(malloc+0x2fc)[0x763408aad94c]
+[sc5:1014984] [ 7] /opt/sw/openmpi/lib/libopen-pal.so.80(opal_class_initialize+0x94)[0x7634088f55b4]
+[sc5:1014984] [ 8] /opt/sw/openmpi/lib/libopen-pal.so.80(opal_tsd_tracked_key_set+0x118)[0x763408927558]
+[sc5:1014984] [ 9] /opt/sw/openmpi/lib/libmpi.so.40(+0x8e7b2)[0x763408dbb7b2]
+[sc5:1014984] [10] /opt/sw/openmpi/lib/libmpi.so.40(ompi_pmix_print_name+0x17)[0x763408dbb947]
+[sc5:1014984] [11] /opt/sw/openmpi/lib/libmpi.so.40(+0x8eb43)[0x763408dbbb43]
+[sc5:1014984] [12] /opt/sw/openmpi/lib/libopen-pal.so.80(mca_btl_tcp_frag_recv+0x4d5)[0x7634089b7f45]
+[sc5:1014984] [13] /opt/sw/openmpi/lib/libopen-pal.so.80(+0xe8b9b)[0x7634089b5b9b]
+[sc5:1014984] [14] /lib/x86_64-linux-gnu/libevent_core-2.1.so.7(+0x1f38c)[0x7634088b738c]
+[sc5:1014984] [15] /lib/x86_64-linux-gnu/libevent_core-2.1.so.7(event_base_loop+0x4af)[0x7634088b8faf]
+[sc5:1014984] [16] /opt/sw/openmpi/lib/libopen-pal.so.80(+0x2422f)[0x7634088f122f]
+[sc5:1014984] [17] /opt/sw/openmpi/lib/libopen-pal.so.80(opal_progress+0x84)[0x7634088f12e4]
+[sc5:1014984] [18] /opt/sw/openmpi/lib/libmpi.so.40(mca_pml_ob1_recv+0x320)[0x763408f73ca0]
+[sc5:1014984] [19] /opt/sw/openmpi/lib/libmpi.so.40(PMPI_Recv+0x177)[0x763408df7c77]
+[sc5:1014984] [20] /home/crawfordd1/Labs/LA2/./LA2.x[0x401359]
+[sc5:1014984] [21] /lib/x86_64-linux-gnu/libc.so.6(+0x2a1ca)[0x763408a2a1ca]
+[sc5:1014984] [22] /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0x8b)[0x763408a2a28b]
+[sc5:1014984] [23] /home/crawfordd1/Labs/LA2/./LA2.x[0x4010f5]
+[sc5:1014984] *** End of error message ***
+[sc4][[62155,0],0][btl_tcp_frag.c:127:mca_btl_tcp_frag_send] peer: unknown mca_btl_tcp_frag_send: writev failed: Connection reset by peer (104)
+srun: error: sc5: task 1: Aborted (core dumped)
+srun: Job step aborted: Waiting up to 32 seconds for job step to finish.
+srun: error: sc6: task 2: Killed
+srun: error: sc4: task 0: Exited with exit code 14

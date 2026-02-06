@@ -1,0 +1,40 @@
+malloc(): unaligned tcache chunk detected
+[sc9:983335] *** Process received signal ***
+[sc8][[26176,0],0][btl_tcp_frag.c:119:mca_btl_tcp_frag_send] mca_btl_tcp_frag_send: writev error (0x7d0a51c76d90, 1071152768)
+	Bad address(1)
+
+[sc9:983335] Signal: Aborted (6)
+[sc9:983335] Signal code:  (-6)
+[sc9:983335] [ 0] /lib/x86_64-linux-gnu/libc.so.6(+0x45330)[0x7ee1ac645330]
+[sc9:983335] [ 1] /lib/x86_64-linux-gnu/libc.so.6(pthread_kill+0x11c)[0x7ee1ac69eb2c]
+[sc9:983335] [ 2] /lib/x86_64-linux-gnu/libc.so.6(gsignal+0x1e)[0x7ee1ac64527e]
+[sc9:983335] [ 3] /lib/x86_64-linux-gnu/libc.so.6(abort+0xdf)[0x7ee1ac6288ff]
+[sc9:983335] [ 4] /lib/x86_64-linux-gnu/libc.so.6(+0x297b6)[0x7ee1ac6297b6]
+[sc9:983335] [ 5] /lib/x86_64-linux-gnu/libc.so.6(+0xa8ff5)[0x7ee1ac6a8ff5]
+[sc9:983335] [ 6] /lib/x86_64-linux-gnu/libc.so.6(malloc+0x2fc)[0x7ee1ac6ad94c]
+[sc9:983335] [ 7] /opt/sw/openmpi/lib/libopen-pal.so.80(opal_class_initialize+0x94)[0x7ee1ac4f55b4]
+[sc9:983335] [ 8] /opt/sw/openmpi/lib/libopen-pal.so.80(opal_tsd_tracked_key_set+0x118)[0x7ee1ac527558]
+[sc9:983335] [ 9] /opt/sw/openmpi/lib/libmpi.so.40(+0x8e7b2)[0x7ee1ac9777b2]
+[sc9:983335] [10] /opt/sw/openmpi/lib/libmpi.so.40(ompi_pmix_print_name+0x17)[0x7ee1ac977947]
+[sc9:983335] [11] /opt/sw/openmpi/lib/libmpi.so.40(+0x8eb43)[0x7ee1ac977b43]
+[sc9:983335] [12] /opt/sw/openmpi/lib/libopen-pal.so.80(mca_btl_tcp_frag_recv+0x4d5)[0x7ee1ac5b7f45]
+[sc9:983335] [13] /opt/sw/openmpi/lib/libopen-pal.so.80(+0xe8b9b)[0x7ee1ac5b5b9b]
+[sc9:983335] [14] /lib/x86_64-linux-gnu/libevent_core-2.1.so.7(+0x1f38c)[0x7ee1ac8c638c]
+[sc9:983335] [15] /lib/x86_64-linux-gnu/libevent_core-2.1.so.7(event_base_loop+0x4af)[0x7ee1ac8c7faf]
+[sc9:983335] [16] /opt/sw/openmpi/lib/libopen-pal.so.80(+0x2422f)[0x7ee1ac4f122f]
+[sc9:983335] [17] /opt/sw/openmpi/lib/libopen-pal.so.80(opal_progress+0x84)[0x7ee1ac4f12e4]
+[sc9:983335] [18] /opt/sw/openmpi/lib/libmpi.so.40(mca_pml_ob1_recv+0x320)[0x7ee1acb2fca0]
+[sc9:983335] [19] /opt/sw/openmpi/lib/libmpi.so.40(PMPI_Recv+0x177)[0x7ee1ac9b3c77]
+[sc9:983335] [20] /home/crawfordd1/Labs/LA2/./LA2.x[0x401359]
+[sc9:983335] [21] /lib/x86_64-linux-gnu/libc.so.6(+0x2a1ca)[0x7ee1ac62a1ca]
+[sc9:983335] [22] /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0x8b)[0x7ee1ac62a28b]
+[sc9:983335] [23] /home/crawfordd1/Labs/LA2/./LA2.x[0x4010f5]
+[sc9:983335] *** End of error message ***
+srun: Job step aborted: Waiting up to 32 seconds for job step to finish.
+slurmstepd-sc8: error: *** STEP 652.0 ON sc8 CANCELLED AT 2026-02-06T10:12:44 ***
+srun: error: sc12: task 4: Killed
+srun: error: sc10: task 2: Killed
+srun: error: sc11: task 3: Killed
+srun: error: sc13: task 5: Killed
+srun: error: sc8: task 0: Exited with exit code 14
+srun: error: sc9: task 1: Aborted (core dumped)
