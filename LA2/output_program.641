@@ -1,0 +1,3 @@
+srun: Job step aborted: Waiting up to 32 seconds for job step to finish.
+srun: error: sc1: task 0: Exited with exit code 6
+slurmstepd-sc1: error: *** STEP 641.0 ON sc1 CANCELLED AT 2026-02-06T10:00:04 ***
