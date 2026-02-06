@@ -33,12 +33,35 @@ int main(int argc, char **argv){
 
         cpu_time_used = ((double) (end_time - start_time)) / CLOCKS_PER_SEC;
         printf("Execution time: %f seconds\n", cpu_time_used);
+        printf("Execution time average: %f seconds\n", (cpu_time_used/(numranks*2)));
     }
     else{
         MPI_Recv(numbers,size,MPI_INT,0,0,MPI_COMM_WORLD,&stat);
         printf("Rank %d", rank);
         numbers[rank] = rank;
         MPI_Send(numbers,size,MPI_INT,0,0,MPI_COMM_WORLD);
+    }
+
+    start_time = clock();
+
+    if(rank==0){
+        numbers[0] = 0;
+        
+        MPI_Send(numbers,size,MPI_INT,1,0,MPI_COMM_WORLD);
+        MPI_Recv(numbers,size,MPI_INT,numranks-1,0,MPI_COMM_WORLD,&stat);
+        printf("Rank %d\n",rank);
+        
+        
+        end_time = clock();
+
+        cpu_time_used = ((double) (end_time - start_time)) / CLOCKS_PER_SEC;
+        printf("Execution time: %f seconds\n", cpu_time_used);
+    }
+    else{
+        MPI_Recv(numbers,size,MPI_INT,rank-1,0,MPI_COMM_WORLD,&stat);
+        printf("Rank %d", rank);
+        numbers[rank] = rank;
+        MPI_Send(numbers,size,MPI_INT,(rank+1)%numranks,0,MPI_COMM_WORLD);
     }
 
     free(numbers);

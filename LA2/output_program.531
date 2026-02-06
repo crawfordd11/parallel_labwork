@@ -1,3 +1,0 @@
-srun: Job step aborted: Waiting up to 32 seconds for job step to finish.
-srun: error: sc1: task 0: Exited with exit code 6
-srun: error: sc2: task 1: Killed
