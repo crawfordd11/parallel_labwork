@@ -19,9 +19,11 @@ int main(int argc, char **argv){
 
     long long size = 1024*1024*1024;
 
-    int *numbers = (int*)malloc(size*sizeof(int));
+    int *numbers = (int*)malloc(size);
 
     //ping pong 
+
+    printf("Number of ranks: %d", numranks);
 
     if(rank==0){
         numbers[0] = 0;
@@ -36,8 +38,8 @@ int main(int argc, char **argv){
         end_time = MPI_Wtime();
 
         cpu_time_used = ((double) (end_time - start_time));
-        printf("Execution time: %f seconds\n", cpu_time_used);
-        printf("Execution time average: %f seconds\n", (cpu_time_used/(numranks*2)));
+        printf("Execution ping pong time: %f seconds\n", cpu_time_used);
+        printf("Execution ping pong time average: %f seconds\n", (cpu_time_used/(numranks*2)));
     }
     else{
         MPI_Recv(numbers,size,MPI_INT,0,0,MPI_COMM_WORLD,&stat);
@@ -59,8 +61,8 @@ int main(int argc, char **argv){
         end_time = MPI_Wtime();
 
         cpu_time_used = ((double) (end_time - start_time));
-        printf("Execution time: %f seconds\n", cpu_time_used);
-        printf("Execution time average: %f seconds\n", (cpu_time_used/(numranks)));
+        printf("Execution ring time: %f seconds\n", cpu_time_used);
+        printf("Execution ring time average: %f seconds\n", (cpu_time_used/(numranks)));
     }
     else{
         MPI_Recv(numbers,size,MPI_INT,rank-1,0,MPI_COMM_WORLD,&stat);
