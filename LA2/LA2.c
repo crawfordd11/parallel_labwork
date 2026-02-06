@@ -11,7 +11,7 @@ int main(int argc, char **argv){
     clock_t start_time, end_time;
     double cpu_time_used;
 
-    start_time = clock();
+    
 
     MPI_Init(&argc, &argv);
     MPI_Comm_size(MPI_COMM_WORLD,&numranks);
@@ -21,16 +21,21 @@ int main(int argc, char **argv){
 
     int *numbers = (int*)malloc(size*sizeof(int));
 
+    //ping pong 
+
     if(rank==0){
         numbers[0] = 0;
+        
+        start_time = MPI_Wtime();
+        
         for(int i = 1; i<numranks; i++){
             MPI_Send(numbers,size,MPI_INT,i,0,MPI_COMM_WORLD);
             MPI_Recv(numbers,size,MPI_INT,i,0,MPI_COMM_WORLD,&stat);
         }
         
-        end_time = clock();
+        end_time = MPI_Wtime();
 
-        cpu_time_used = ((double) (end_time - start_time)) / CLOCKS_PER_SEC;
+        cpu_time_used = ((double) (end_time - start_time));
         printf("Execution time: %f seconds\n", cpu_time_used);
         printf("Execution time average: %f seconds\n", (cpu_time_used/(numranks*2)));
     }
@@ -40,20 +45,22 @@ int main(int argc, char **argv){
         MPI_Send(numbers,size,MPI_INT,0,0,MPI_COMM_WORLD);
     }
 
-    start_time = clock();
+    //Ring time
 
     if(rank==0){
         numbers[0] = 0;
         
+        start_time = MPI_Wtime();
+
         MPI_Send(numbers,size,MPI_INT,1,0,MPI_COMM_WORLD);
         MPI_Recv(numbers,size,MPI_INT,numranks-1,0,MPI_COMM_WORLD,&stat);
         
         
-        end_time = clock();
+        end_time = MPI_Wtime();
 
-        cpu_time_used = ((double) (end_time - start_time)) / CLOCKS_PER_SEC;
+        cpu_time_used = ((double) (end_time - start_time));
         printf("Execution time: %f seconds\n", cpu_time_used);
-        printf("Execution time average: %f seconds\n", (cpu_time_used/(numranks*2)));
+        printf("Execution time average: %f seconds\n", (cpu_time_used/(numranks)));
     }
     else{
         MPI_Recv(numbers,size,MPI_INT,rank-1,0,MPI_COMM_WORLD,&stat);
