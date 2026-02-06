@@ -17,14 +17,17 @@ int main(int argc, char **argv){
     MPI_Comm_size(MPI_COMM_WORLD,&numranks);
     MPI_Comm_rank(MPI_COMM_WORLD,&rank);
 
-    int number=0;
+    long long size = 1024*1024*1024;
+
+    int *numbers = (int*) malloc(size*sizeOf(int));
+
     printf("Rank: %d, Number: %d\n",rank,number);
     if(rank==0){
-        number=100;
+        numbers[0] = 0;
         for(int i = 1; i<numranks; i++){
-            MPI_Send(&number,1,MPI_INT,i,0,MPI_COMM_WORLD);
-            MPI_Recv(&number,1,MPI_INT,i,0,MPI_COMM_WORLD,&stat);
-            printf("Rank %d, Number: %d\n",rank,number);
+            MPI_Send(&numbers,size,MPI_INT,i,0,MPI_COMM_WORLD);
+            MPI_Recv(&numbers,size,MPI_INT,i,0,MPI_COMM_WORLD,&stat);
+            printf("Rank %d\n",rank);
         }
         
         end_time = clock();
@@ -33,12 +36,14 @@ int main(int argc, char **argv){
         printf("Execution time: %f seconds\n", cpu_time_used);
     }
     else{
-        MPI_Recv(&number,1,MPI_INT,0,0,MPI_COMM_WORLD,&stat);
-        printf("Rank %d, Number: %d\n",rank,number);
-        number++;
-        MPI_Send(&number,1,MPI_INT,0,0,MPI_COMM_WORLD);
+        MPI_Recv(&numbers,size,MPI_INT,0,0,MPI_COMM_WORLD,&stat);
+        printf("Rank %d", rank);
+        numbers[rank] = rank;
+        MPI_Send(&numbers,size,MPI_INT,0,0,MPI_COMM_WORLD);
     }
 
+    free(numbers);
+    
     MPI_Finalize();
 
 
