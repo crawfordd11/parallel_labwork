@@ -35,7 +35,7 @@ int main(int argc, char **argv){
     MPI_Finalize();
 
     cpu_time_used = ((double) (end_time - start_time)) / CLOCKS_PER_SEC;
-    printf("Execution time: %f seconds\n" cpu_time_used);
+    printf("Execution time: %f seconds\n", cpu_time_used);
 
     return 0;    
 }
