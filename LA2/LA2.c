@@ -21,9 +21,16 @@ int main(int argc, char **argv){
     printf("Rank: %d, Number: %d\n",rank,number);
     if(rank==0){
         number=100;
-        MPI_Send(&number,1,MPI_INT,1,0,MPI_COMM_WORLD);
-        MPI_Recv(&number,1,MPI_INT,1,0,MPI_COMM_WORLD,&stat);
-        printf("Rank %d, Number: %d\n",rank,number);
+        for(int i = 1; i<=numranks; i++){
+            MPI_Send(&number,1,MPI_INT,i,0,MPI_COMM_WORLD);
+            MPI_Recv(&number,1,MPI_INT,i,0,MPI_COMM_WORLD,&stat);
+            printf("Rank %d, Number: %d\n",rank,number);
+        }
+        
+        end_time = clock();
+
+        cpu_time_used = ((double) (end_time - start_time)) / CLOCKS_PER_SEC;
+        printf("Execution time: %f seconds\n", cpu_time_used);
     }
     else{
         MPI_Recv(&number,1,MPI_INT,0,0,MPI_COMM_WORLD,&stat);
@@ -34,8 +41,6 @@ int main(int argc, char **argv){
 
     MPI_Finalize();
 
-    cpu_time_used = ((double) (end_time - start_time)) / CLOCKS_PER_SEC;
-    printf("Execution time: %f seconds\n", cpu_time_used);
 
     return 0;    
 }
