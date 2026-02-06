@@ -21,7 +21,7 @@ int main(int argc, char **argv){
     printf("Rank: %d, Number: %d\n",rank,number);
     if(rank==0){
         number=100;
-        for(int i = 1; i<=numranks; i++){
+        for(int i = 1; i<numranks; i++){
             MPI_Send(&number,1,MPI_INT,i,0,MPI_COMM_WORLD);
             MPI_Recv(&number,1,MPI_INT,i,0,MPI_COMM_WORLD,&stat);
             printf("Rank %d, Number: %d\n",rank,number);
