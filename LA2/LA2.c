@@ -23,7 +23,7 @@ int main(int argc, char **argv){
 
     //ping pong 
 
-    printf("Number of ranks: %d", numranks);
+   
 
     if(rank==0){
         numbers[0] = 0;
@@ -38,8 +38,9 @@ int main(int argc, char **argv){
         end_time = MPI_Wtime();
 
         cpu_time_used = ((double) (end_time - start_time));
+        printf("Number of ranks: %d\n", numranks);
         printf("Execution ping pong time: %f seconds\n", cpu_time_used);
-        printf("Execution ping pong time average: %f seconds\n", (cpu_time_used/(numranks*2)));
+        printf("Execution ping pong time average: %f seconds\n", (cpu_time_used/((numranks-1)*2)));
     }
     else{
         MPI_Recv(numbers,size,MPI_INT,0,0,MPI_COMM_WORLD,&stat);
