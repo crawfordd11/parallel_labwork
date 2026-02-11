@@ -161,7 +161,7 @@ int main(int argc, char** argv){
 
 
     MPI_Finalize();
-    free(C);
+    //free(C);
     return 0;
 }
 
