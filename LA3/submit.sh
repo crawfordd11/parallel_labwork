@@ -7,4 +7,4 @@
 #SBATCH --output=output_program.%j
 #SBATCH --export=ALL
 
-srun ./LA2.x
+srun ./LA3.x
