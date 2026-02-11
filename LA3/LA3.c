@@ -231,6 +231,10 @@ int main(int argc, char** argv){
         printf("Factor Matrix B ( %d x %d ):\n", m, p);
         printMatrix(B, m, p);
 
+        printf("Transpose Matrix B ( %d x %d ):\n", p, m);
+        transposeMatrix(B, m, p);
+        printMatrix(B, p, m);
+
         printf("Product Matrix C ( %d x %d ):\n", n, p);
         printMatrix(C, n, p);
     }
