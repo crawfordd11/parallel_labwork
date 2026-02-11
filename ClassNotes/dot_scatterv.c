@@ -69,7 +69,7 @@ int main(int argc, char** argv){
 
     double startcomp=MPI_Wtime();
     int result=0;
-    for(int i=0; i<sendcounts;i++){
+    for(int i=0; i<sendcounts[rank];i++){
         result+=mya[i]*myb[i];
     }
     double endcomp=MPI_Wtime();
