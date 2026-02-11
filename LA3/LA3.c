@@ -3,6 +3,9 @@
 #include <mpi.h>
 #include "LA3.h"
 
+//TODO: review MPI_mm function for correctness
+//TODO: implement main function to test MPI_mm
+
 //Function to assign values to matrix A
 // Here we assign A[i][j] to be sequential numbers starting from [1,1], row-wise
 void assignA(double* mat, int n, int m){
@@ -38,24 +41,41 @@ void printMatrix(double* mat, int n, int m){
     }
 }
 
+//Function to transpose a matrix A of size m by n, resulting in a matrix of size n by m
+//Replaces the original matrix values A with its transpose.
+void transposeMatrix(double* A, int m, int n){
+    // Create a new matrix 'Transpose' of size n x m
+    double* Transpose = (double*) malloc(n * m * sizeof(double));
+
+    // Iterate through each element of the original matrix A
+    for(int i = 0; i < m; i++){
+        for(int j = 0; j < n; j++){
+            Transpose[j*m + i] = A[i*n + j];
+        }
+    }
+    A = Transpose;
+    free(Transpose);
+}
+    
+
 //Function to compute the dot product of two vectors A and B of size n
 //Uses the sum of products method
 //A and B are input vectors, C is the output (single value) and n is the length of the vectors
-void dotProduct(double* A, double* B, double* C, int n){
+void dotProduct(double* A, double* B, double C, int n){
     double sum = 0;
     for(int i=0;i<n;i++){
         sum+=A[i]*B[i];
     }    
-    *C = sum;
+    C = sum;
 }
 
 //Function to perform matrix multiplication of A and B, resulting in C
-//A is an n by m matrix, B is an m by p matrix, C is an n by p matrix
+//A is a vector that represents n by m matrix, B is a vector that represents m by p matrix, C is an n by p matrix
 double* mm(double* A, double* B, int n, int m, int p){
     double* C=malloc(n*p*sizeof(double));
     for(int i=0;i<n;i++){                //pick a row in A
         for(int j=0;j<p;j++){            //pick a col in B
-            int sum=0;
+            double sum=0;
             for(int k=0;k<m;k++){        //do the dot product
                 sum+=A[i*m+k]*B[k*p+j];  //A[i][k]*B[k][j]
             }
@@ -69,69 +89,62 @@ double* mm(double* A, double* B, int n, int m, int p){
 //A is an n by m matrix, B is an m by p matrix, C is an n by p matrix
 //rank is the rank of the current process, numranks is the total number of processes
 //Requires dotProduct function to compute the dot product of a row of A and a column of B
+//Requires a Transpose function to transpose B
 void MPI_mm(double* A, double* B, double* C, int n, int m, int p, int rank, int numranks, MPI_Status stat){
     int numDotProducts = n * p;
     int dotProductsPerRank = numDotProducts / numranks;
-    // int remainder = numDotProducts % numranks;
+    
+    //In our tests, numranks << numDotProducts, allowing for the assumption that each rank will compute at least one dot product, 
+    //The case where the number of ranks is greater than the number of dot products is not handled by this code, 
+    //and would require additional logic to ensure optimal load ballance.
 
-    // if(remainder > 0){
-    //     dotProductsPerRank++;
-    //     for(int i = 0; i < numranks; i++){
-        
-    //     }
-    // }
-    if(rank == 0){
+    //Create buffers for the number of dot products assigned to each rank, and the displacements for those dot products.
+    int* C_sendcounts = (int*) malloc(numranks * sizeof(int));
+    int* C_displs = (int*) malloc(numranks * sizeof(int));
+    
+    //This loop describes the exact responsibility for each rank
+    //It does not add padding to account for the fact that the number of dot products may not be perfectly divisible 
+    //by the number of ranks, but it does ensure that all dot products are assigned to a rank.
+    if(rank == 0){    
         for(int i = 0; i < numranks; i++){
-            int start = i * dotProductsPerRank;
-            int end = (i == numranks - 1) ? numDotProducts : start + dotProductsPerRank;
-//TODO: fix size of buffer to hold the rows of A and columns of B that this rank will compute the dot products for
-            double* A_buffer = malloc(dotProductsPerRank * m * sizeof(double));
-            double* B_buffer = malloc(dotProductsPerRank * m * sizeof(double));
-//TODO: fill the buffers with the appropriate rows of A and columns of B 
-            for(int j = 0; j < dotProductsPerRank; j++){
-                int dotProductIndex = start + j;
-                int row = dotProductIndex / p;
-                int col = dotProductIndex % p;
-                for(int k = 0; k < m; k++){
-                    A_buffer[j*m + k] = A[row*m + k];
-                    B_buffer[j*m + k] = B[k*p + col];
-                }
-            }   
-            //send the buffers to the appropriate ranks
-            MPI_Send(A_buffer, dotProductsPerRank * m, MPI_DOUBLE, i, 0, MPI_COMM_WORLD);
-            MPI_Send(B_buffer, dotProductsPerRank * m, MPI_DOUBLE, i, 0, MPI_COMM_WORLD);
-            MPI_Send(C, numDotProducts, MPI_DOUBLE, i, 0, MPI_COMM_WORLD);
-            //receive the results from rank i
-            MPI_Recv(A_buffer, dotProductsPerRank * m, MPI_DOUBLE, i, 0, MPI_COMM_WORLD, &stat);
-            MPI_Recv(B_buffer, dotProductsPerRank * m, MPI_DOUBLE, i, 0, MPI_COMM_WORLD, &stat);
-            MPI_Recv(C, numDotProducts, MPI_DOUBLE, i, 0, MPI_COMM_WORLD, &stat);
+            int sendcount = (i == numranks - 1) ? numDotProducts - (dotProductsPerRank * i) : dotProductsPerRank;
+            int displs = i * dotProductsPerRank;
+            C_sendcounts[i] = sendcount;
+            C_displs[i] = displs;
         }
     }
     
-//TODO: check if blocking calls are an issue here for rank 0 to do work. If so, bring back else statement or consider non blocking. 
+    // //TODO: Optimize sending of A and B with MPI_Scatterv.
+    // MPI_Scatterv(A, A_sendcounts, A_displs, MPI_DOUBLE, C_buf, A_displs[rank], MPI_DOUBLE, 0, MPI_COMM_WORLD);
+    transposeMatrix(B, m, p);
 
-    //receive the results from rank 0
-    MPI_Recv(A_buffer, dotProductsPerRank * m, MPI_DOUBLE, 0, 0, MPI_COMM_WORLD, &stat);
-    MPI_Recv(B_buffer, dotProductsPerRank * m, MPI_DOUBLE, 0, 0, MPI_COMM_WORLD, &stat);
-    MPI_Recv(C, numDotProducts, MPI_DOUBLE, 0, 0, MPI_COMM_WORLD, &stat);
+    MPI_Bcast(A, n*m, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+    MPI_Bcast(B, m*p, MPI_DOUBLE, 0, MPI_COMM_WORLD);
     
-//TODO: compute the dot products assigned to this rank review this
-    for(int j = 0; j < dotProductsPerRank; j++){
+    //allocate info for the receive buffer on each rank. The finished work for a given rank will be stored here.
+    double* C_buf = (double*) malloc(C_sendcounts[rank] * sizeof(double));
+
+    //Each rank computes its assigned dot products, storing the results in C_buf. 
+    //The index of the dot product corresponds to the row of A and column of B that are used for that dot product.
+    for(int j = C_displs[rank]; j < C_displs[rank] + C_sendcounts[rank]; j++){
         double result;
-        dotProduct(&A_buffer[j*m], &B_buffer[j*m], &result, m);
-        int dotProductIndex = rank * dotProductsPerRank + j;
-        int row = dotProductIndex / p;
+        int dotProductIndex = j;
         int col = dotProductIndex % p;
-        C[row*p + col] = result;
+        int row = (dotProductIndex -col) / n;
+        
+        //make proper vectors to pass to the dot product function, which expects two vectors of size m.
+        //because B has been transposed, we can treat the column of B as a row vector.
+        dotProduct(&A[row*m], &B[col*m], &result, m);
+
+        C_buf[j - C_displs[rank]] = result;
     }
     
-    //send the buffers back to rank 0
-    MPI_Send(A_buffer, dotProductsPerRank * m, MPI_DOUBLE, 0, 0, MPI_COMM_WORLD);
-    MPI_Send(B_buffer, dotProductsPerRank * m, MPI_DOUBLE, 0, 0, MPI_COMM_WORLD);
-    MPI_Send(C, numDotProducts, MPI_DOUBLE, 0, 0, MPI_COMM_WORLD);   
-    
+    //send the buffers back to rank 0, which will compose the final matrix C from the results.
+    MPI_Gatherv(C_buf, C_sendcounts[rank], MPI_DOUBLE, C, C_sendcounts, C_displs, MPI_DOUBLE, 0, MPI_COMM_WORLD);
 
-    return C;
+    free(C_sendcounts);
+    free(C_displs);
+    free(C_buf);
 }
 
 int main(int argc, char** argv){
@@ -141,6 +154,9 @@ int main(int argc, char** argv){
     MPI_Comm_size(MPI_COMM_WORLD,&numranks);
     MPI_Comm_rank(MPI_COMM_WORLD,&rank);
     MPI_Status stat;
+
+    //generate data
+    long SIZE = 1024*1024*1024/sizeof(double); //1GB worth of doubles
 
     double* C=malloc(n*p*sizeof(double));
 
