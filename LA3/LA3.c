@@ -157,11 +157,32 @@ int main(int argc, char** argv){
     //generate data
     //long SIZE = 1024*1024*1024/sizeof(double); //1GB worth of doubles
 
-    //double* C=malloc(n*p*sizeof(double));
+    int n = 3, m = 3, p = 3; // Example dimensions to match assingment
+    double* A = (double*) malloc(n * m * sizeof(double));
+    double* B = (double*) malloc(m * p * sizeof(double));    
+    double* C = (double*) malloc(n * p * sizeof(double)); 
+    assignA(A, n, m);
+    assignB(B, m, p);
 
+    printf("We made it this far!\n");
+
+    MPI_mm(A, B, C, n, m, p, rank, numranks);
+
+    printf("Factor Matrix A ( %d x %d ):\n", n, p);
+    printMatrix(A, n, m);
+
+    printf("Factor Matrix B ( %d x %d ):\n", m, p);
+    printMatrix(B, m, p);
+
+    printf("Product Matrix C ( %d x %d ):\n", n, p);
+    printMatrix(C, n, p);
+
+    free(A);
+    free(B);
+    free(C);
 
     MPI_Finalize();
-    //free(C);
+    
     return 0;
 }
 
