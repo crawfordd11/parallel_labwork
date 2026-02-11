@@ -61,12 +61,11 @@ void transposeMatrix(double* A, int m, int n){
 //Function to compute the dot product of two vectors A and B of size n
 //Uses the sum of products method
 //A and B are input vectors, C is the output (single value) and n is the length of the vectors
-void dotProduct(double* A, double* B, double C, int n){
-    double sum = 0;
+void dotProduct(double* A, double* B, double* C, int n){
+    *C = 0;
     for(int i=0;i<n;i++){
-        sum+=A[i]*B[i];
+        *C+=A[i]*B[i];
     }    
-    C = sum;
 }
 
 //Function to perform matrix multiplication of A and B, resulting in C
@@ -90,7 +89,7 @@ double* mm(double* A, double* B, int n, int m, int p){
 //rank is the rank of the current process, numranks is the total number of processes
 //Requires dotProduct function to compute the dot product of a row of A and a column of B
 //Requires a Transpose function to transpose B
-void MPI_mm(double* A, double* B, double* C, int n, int m, int p, int rank, int numranks, MPI_Status stat){
+void MPI_mm(double* A, double* B, double* C, int n, int m, int p, int rank, int numranks){
     int numDotProducts = n * p;
     int dotProductsPerRank = numDotProducts / numranks;
     
@@ -127,7 +126,7 @@ void MPI_mm(double* A, double* B, double* C, int n, int m, int p, int rank, int 
     //Each rank computes its assigned dot products, storing the results in C_buf. 
     //The index of the dot product corresponds to the row of A and column of B that are used for that dot product.
     for(int j = C_displs[rank]; j < C_displs[rank] + C_sendcounts[rank]; j++){
-        double result;
+        double result = 0;
         int dotProductIndex = j;
         int col = dotProductIndex % p;
         int row = (dotProductIndex -col) / n;
@@ -156,9 +155,9 @@ int main(int argc, char** argv){
     MPI_Status stat;
 
     //generate data
-    long SIZE = 1024*1024*1024/sizeof(double); //1GB worth of doubles
+    //long SIZE = 1024*1024*1024/sizeof(double); //1GB worth of doubles
 
-    double* C=malloc(n*p*sizeof(double));
+    //double* C=malloc(n*p*sizeof(double));
 
 
     MPI_Finalize();
