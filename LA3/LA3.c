@@ -164,18 +164,76 @@ int main(int argc, char** argv){
     assignA(A, n, m);
     assignB(B, m, p);
 
-    printf("We made it this far!\n");
+    //multiplication
 
-    MPI_mm(A, B, C, n, m, p, rank, numranks);
+    //==========================================
 
-    printf("Factor Matrix A ( %d x %d ):\n", n, p);
-    printMatrix(A, n, m);
+    int numDotProducts = n * p;
+    int dotProductsPerRank = numDotProducts / numranks;
+    
+    //In our tests, numranks << numDotProducts, allowing for the assumption that each rank will compute at least one dot product, 
+    //The case where the number of ranks is greater than the number of dot products is not handled by this code, 
+    //and would require additional logic to ensure optimal load ballance.
 
-    printf("Factor Matrix B ( %d x %d ):\n", m, p);
-    printMatrix(B, m, p);
+    //Create buffers for the number of dot products assigned to each rank, and the displacements for those dot products.
+    int* C_sendcounts = (int*) malloc(numranks * sizeof(int));
+    int* C_displs = (int*) malloc(numranks * sizeof(int));
+    
+    //This loop describes the exact responsibility for each rank
+    //It does not add padding to account for the fact that the number of dot products may not be perfectly divisible 
+    //by the number of ranks, but it does ensure that all dot products are assigned to a rank.
+     
+    for(int i = 0; i < numranks; i++){
+        int sendcount = (i == numranks - 1) ? numDotProducts - (dotProductsPerRank * i) : dotProductsPerRank;
+        int displs = i * dotProductsPerRank;
+        C_sendcounts[i] = sendcount;
+        C_displs[i] = displs;
+    }
+    
+    // //TODO: Optimize sending of A and B with MPI_Scatterv.
+    // MPI_Scatterv(A, A_sendcounts, A_displs, MPI_DOUBLE, C_buf, A_displs[rank], MPI_DOUBLE, 0, MPI_COMM_WORLD);
+    transposeMatrix(B, m, p);
 
-    printf("Product Matrix C ( %d x %d ):\n", n, p);
-    printMatrix(C, n, p);
+    MPI_Bcast(A, n*m, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+    MPI_Bcast(B, m*p, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+    
+    //allocate info for the receive buffer on each rank. The finished work for a given rank will be stored here.
+    double* C_buf = (double*) malloc(C_sendcounts[rank] * sizeof(double));
+
+    //Each rank computes its assigned dot products, storing the results in C_buf. 
+    //The index of the dot product corresponds to the row of A and column of B that are used for that dot product.
+    for(int j = C_displs[rank]; j < C_displs[rank] + C_sendcounts[rank]; j++){
+        double result = 0;
+        int dotProductIndex = j;
+        int col = dotProductIndex % p;
+        int row = (dotProductIndex -col) / n;
+        
+        //make proper vectors to pass to the dot product function, which expects two vectors of size m.
+        //because B has been transposed, we can treat the column of B as a row vector.
+        dotProduct(&A[row*m], &B[col*m], &result, m);
+
+        C_buf[j - C_displs[rank]] = result;
+    }
+    
+    //send the buffers back to rank 0, which will compose the final matrix C from the results.
+    MPI_Gatherv(C_buf, C_sendcounts[rank], MPI_DOUBLE, C, C_sendcounts, C_displs, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+
+    free(C_sendcounts);
+    free(C_displs);
+    free(C_buf);
+
+    //==========================================
+
+    if(rank == 0){
+        printf("Factor Matrix A ( %d x %d ):\n", n, p);
+        printMatrix(A, n, m);
+
+        printf("Factor Matrix B ( %d x %d ):\n", m, p);
+        printMatrix(B, m, p);
+
+        printf("Product Matrix C ( %d x %d ):\n", n, p);
+        printMatrix(C, n, p);
+    }
 
     free(A);
     free(B);
