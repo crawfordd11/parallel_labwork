@@ -2,8 +2,8 @@ CC = mpicc
 LDC = mpicc
 FLAGS =
 LD_FLAGS =
-PROG = dot_scatter.x
-OBJS = dot_scatter.o
+PROG = dot_scatterv.x
+OBJS = dot_scatterv.o
 RM = /bin/rm
 
 
