@@ -43,6 +43,7 @@ void printMatrix(double* mat, int n, int m){
 
 //Function to transpose a matrix A of size m by n, resulting in a matrix of size n by m
 //Replaces the original matrix values A with its transpose.
+//Requires that the input matrix A is stored in row major order, and that the output matrix is also stored in row major order.
 void transposeMatrix(double* A, int m, int n){
     // Create a new matrix 'Transpose' of size n x m
     double* Transpose = (double*) malloc(n * m * sizeof(double));
@@ -53,7 +54,11 @@ void transposeMatrix(double* A, int m, int n){
             Transpose[j*m + i] = A[i*n + j];
         }
     }
-    A = Transpose;
+    
+    for(int i = 0; i < m*n; i++){
+        A[i] = Transpose[i];
+    }
+
     free(Transpose);
 }
     
