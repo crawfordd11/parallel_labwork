@@ -11,6 +11,8 @@ int main(int argc, char** argv){
     MPI_Comm_rank(MPI_COMM_WORLD,&rank);
     MPI_Status stat;
 
+    double startfull = MPI_Wtime();
+
     int N;
     if(rank==0){
         N=1000000000;
@@ -49,7 +51,7 @@ int main(int argc, char** argv){
     //MPI_Scatter(info to send, how many per rank, what kind, where do I recieve info, how many, what kind, from who, what world am I in)
     MPI_Scatter(a,sendcounts,MPI_INT,mya,sendcounts,MPI_INT,0,MPI_COMM_WORLD);
     MPI_Scatter(b,sendcounts,MPI_INT,myb,sendcounts,MPI_INT,0,MPI_COMM_WORLD);
-    double endscatter-MPI_Wtime();
+    double endscatter=MPI_Wtime();
 
     double startcomp=MPI_Wtime();
     int result=0;
@@ -61,7 +63,7 @@ int main(int argc, char** argv){
     double startreduce=MPI_Wtime();
     //MPI_Reduce has a collector, but Allreduce sends to all
     MPI_Allreduce(MPI_IN_PLACE,&result,1,MPI_INT,MPI_SUM,MPI_COMM_WORLD);
-    double endrecude=MPI_Wtime();
+    double endreduce=MPI_Wtime();
     double endfull=MPI_Wtime();
 
     if(rank==0){
