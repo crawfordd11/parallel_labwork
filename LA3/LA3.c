@@ -157,55 +157,63 @@ int main(int argc, char** argv){
     MPI_Init(&argc,&argv);
     MPI_Comm_size(MPI_COMM_WORLD,&numranks);
     MPI_Comm_rank(MPI_COMM_WORLD,&rank);
-    MPI_Status stat;
+
+    int n = 3, m = 3, p = 3; // Example dimensions to match assingment
+    
+    double *A, *B, *C;
 
     //generate data
-    //long SIZE = 1024*1024*1024/sizeof(double); //1GB worth of doubles
+    if(rank == 0){
+        //long SIZE = 1024*1024*1024/sizeof(double); //1GB worth of doubles
 
-    int n = 2, m = 3, p = 4; // Example dimensions to match assingment
-    double* A = (double*) malloc(n * m * sizeof(double));
-    double* B = (double*) malloc(m * p * sizeof(double));    
-    double* C = (double*) malloc(n * p * sizeof(double)); 
-    assignA(A, n, m);
-    assignB(B, m, p);
+        *A = (double*) malloc(n * m * sizeof(double));
+        *B = (double*) malloc(m * p * sizeof(double));    
+        *C = (double*) malloc(n * p * sizeof(double)); 
 
+        assignA(A, n, m);
+        assignB(B, m, p);
+    }
+    
     //multiplication
 
     //==========================================
-
     int numDotProducts = n * p;
     int dotProductsPerRank = numDotProducts / numranks;
     
-    //In our tests, numranks << numDotProducts, allowing for the assumption that each rank will compute at least one dot product, 
-    //The case where the number of ranks is greater than the number of dot products is not handled by this code, 
-    //and would require additional logic to ensure optimal load ballance.
-
-    //Create buffers for the number of dot products assigned to each rank, and the displacements for those dot products.
+    //Create buffers for the number of dot products assigned to each rank, and the displacements for those dot products, and the send storage.
     int* C_sendcounts = (int*) malloc(numranks * sizeof(int));
     int* C_displs = (int*) malloc(numranks * sizeof(int));
     
-    //This loop describes the exact responsibility for each rank
-    //It does not add padding to account for the fact that the number of dot products may not be perfectly divisible 
-    //by the number of ranks, but it does ensure that all dot products are assigned to a rank.
-     
     for(int i = 0; i < numranks; i++){
         int sendcount = (i == numranks - 1) ? numDotProducts - (dotProductsPerRank * i) : dotProductsPerRank;
         int displs = i * dotProductsPerRank;
         C_sendcounts[i] = sendcount;
         C_displs[i] = displs;
     }
-    
-    // //TODO: Optimize sending of A and B with MPI_Scatterv.
-    // MPI_Scatterv(A, A_sendcounts, A_displs, MPI_DOUBLE, C_buf, A_displs[rank], MPI_DOUBLE, 0, MPI_COMM_WORLD);
     transposeMatrix(B, m, p);
 
-    MPI_Bcast(A, n*m, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+    // //TODO: Optimize sending of A and B with MPI_Scatterv.
+    int* A_sendcounts = (int*) malloc(numranks * sizeof(int));
+    int* A_displs = (int*) malloc(numranks * sizeof(int));
+    
+    for(int i = 0; i < numranks; i++){
+        int sendcount = (C_sendcounts[i]%p > 0) ? m * ((C_sendcounts[i])/p + 1) : m * ((C_sendcounts[i])/p);
+        A_sendcounts[i] = sendcount;
+    }
+    // A_displs[0] = 0;
+    // for(int i = 1; i < numranks; i++){
+    //     int displs = ((C_sendcounts[i])%p > 0) ? A_sendcounts[i] : m * ((C_sendcounts[rank])/p);
+    //     A_displs[i] = displs;
+    // }
+
+
+    MPI_Scatterv(A,sendcounts,disp,MPI_INT,mya,sendcounts[rank],MPI_INT,0,MPI_COMM_WORLD);
     MPI_Bcast(B, m*p, MPI_DOUBLE, 0, MPI_COMM_WORLD);
     
-    //allocate info for the receive buffer on each rank. The finished work for a given rank will be stored here.
-    double* C_buf = (double*) malloc(C_sendcounts[rank] * sizeof(double));
+    
 
     //Each rank computes its assigned dot products, storing the results in C_buf. 
+    double* C_buf = (double*) malloc(C_sendcounts[rank] * sizeof(double));
     //The index of the dot product corresponds to the row of A and column of B that are used for that dot product.
     for(int j = C_displs[rank]; j < C_displs[rank] + C_sendcounts[rank]; j++){
         double result = 0;
@@ -230,7 +238,7 @@ int main(int argc, char** argv){
     //==========================================
 
     if(rank == 0){
-        printf("Factor Matrix A ( %d x %d ):\n", n, p);
+        printf("Factor Matrix A ( %d x %d ):\n", n, m);
         printMatrix(A, n, m);
 
         printf("Factor Matrix B ( %d x %d ):\n", m, p);
@@ -242,11 +250,11 @@ int main(int argc, char** argv){
 
         printf("Product Matrix C ( %d x %d ):\n", n, p);
         printMatrix(C, n, p);
-    }
 
-    free(A);
-    free(B);
-    free(C);
+        free(A);
+        free(B);
+        free(C);
+    }
 
     MPI_Finalize();
     

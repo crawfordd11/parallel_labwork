@@ -1,0 +1,6 @@
+//In our tests, numranks << numDotProducts, allowing for the assumption that each rank will compute at least one dot product, 
+    //The case where the number of ranks is greater than the number of dot products is not handled by this code, 
+    //and would require additional logic to ensure optimal load ballance.
+    //This loop describes the exact responsibility for each rank
+    //It does not add padding to account for the fact that the number of dot products may not be perfectly divisible 
+    //by the number of ranks, but it does ensure that all dot products are assigned to a rank.
