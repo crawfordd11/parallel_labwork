@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "mm-student.h"
+#include <mpi.h>
 
 //Matrix multiplication function
 // C = A * B where A is n x m, B is m x p, C is n x p
