@@ -1,0 +1,14 @@
+[sc4:1284366] *** Process received signal ***
+[sc4:1284366] Signal: Segmentation fault (11)
+[sc4:1284366] Signal code: Address not mapped (1)
+[sc4:1284366] Failing at address: (nil)
+[sc4:1284366] [ 0] /lib/x86_64-linux-gnu/libc.so.6(+0x45330)[0x727300645330]
+[sc4:1284366] [ 1] /home/crawfordd1/Labs/LA3/./LA3.x[0x4018f6]
+[sc4:1284366] [ 2] /lib/x86_64-linux-gnu/libc.so.6(+0x2a1ca)[0x72730062a1ca]
+[sc4:1284366] [ 3] /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0x8b)[0x72730062a28b]
+[sc4:1284366] [ 4] /home/crawfordd1/Labs/LA3/./LA3.x[0x401115]
+[sc4:1284366] *** End of error message ***
+srun: error: sc4: task 0: Segmentation fault (core dumped)
+srun: Job step aborted: Waiting up to 32 seconds for job step to finish.
+srun: error: sc5: task 1: Exited with exit code 14
+srun: error: sc6: task 2: Killed
