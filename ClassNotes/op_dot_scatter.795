@@ -1,0 +1,13 @@
+Rank 1: Numbr of Elements: 142
+Rank 4: Numbr of Elements: 142
+Rank 2: Numbr of Elements: 142
+Rank 5: Numbr of Elements: 142
+Rank 0: Numbr of Elements: 142
+Rank: 0, REsult: 4000
+Full time: 0.021308
+Calc time: 0.000001
+Alloc+Initalize time: 0.000008
+Scatter time: 0.001088
+Reduce time: 0.000125
+Rank 6: Numbr of Elements: 148
+Rank 3: Numbr of Elements: 142
