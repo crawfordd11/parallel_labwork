@@ -147,8 +147,8 @@ int main(int argc, char** argv){
 
     int N, M;
     if(rank==0){
-        N=1024*512;
-        M=1024;
+        N=1024*16;
+        M=1024*16;
     }
 
     MPI_Bcast(&N,1,MPI_INT,0,MPI_COMM_WORLD);
