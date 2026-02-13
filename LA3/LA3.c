@@ -38,11 +38,12 @@ void printMatrix(double* mat, int n, int m){
         int smallerM = (m>10) ? 10 : m;
         for(int i = 0; i < smallerN; i++){
             if(i==9){
-                    printf("...   ...   ...   ...   ...   ...   ...   ...   ...   ...   ...   \n");
+                for(int j = 0; j < smallerM; j++){printf("   ...");}
+                printf("\n");
             }
             for(int j = 0; j < smallerM; j++){
                 if(j==9){
-                    printf("... ");
+                    printf("...");
                     printf("%6.2f ", mat[i*m + m-1]);
                 }
                 else{
@@ -126,7 +127,7 @@ int main(int argc, char** argv){
 
     int N, M;
     if(rank==0){
-        N=100;
+        N=1000;
         M=100;
     }
 
@@ -142,11 +143,11 @@ int main(int argc, char** argv){
         b=(double*) malloc(N*M*sizeof(double));
         c=(double*) malloc(N*sizeof(double));
         for(int i = 0; i<M; i++){
-            a[i]=2.0;
             for(int j = 0; j<N; j++){
                 b[i*M+j]=1.0;
             }
         }
+        assignA(a, M, 1);
     }
     double endalloc=MPI_Wtime();
 
