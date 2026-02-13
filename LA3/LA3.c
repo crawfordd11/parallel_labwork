@@ -33,17 +33,21 @@ void assignB(double* mat, int n, int m){
 //Function to print matrix, row major order 
 //n is the number of rows, m is the number of columns
 void printMatrix(double* mat, int n, int m){
-    if(n>10 || m>10){
-        int smallerN = (n>10) ? 10 : n;
-        int smallerM = (m>10) ? 10 : m;
+    int limit = 10;
+    if(n>limit || m>limit){
+        int smallerN = (n>limit) ? limit : n;
+        int smallerM = (m>limit) ? limit : m;
         for(int i = 0; i < smallerN; i++){
-            if(i==9){
-                for(int j = 0; j < smallerM; j++){printf("   ...");}
+            if(i==limit-1){
+                for(int j = 0; j < smallerM; j++){printf("   ... ");}
                 printf("\n");
             }
             for(int j = 0; j < smallerM; j++){
-                if(j==9){
-                    printf("...");
+                if(j==limit-1 && i==limit-1){
+                    printf("%6.2f ", mat[i*m + n-1]);
+                }
+                else if(j==limit-1){
+                    printf("   ... ");
                     printf("%6.2f ", mat[i*m + m-1]);
                 }
                 else{
@@ -127,8 +131,8 @@ int main(int argc, char** argv){
 
     int N, M;
     if(rank==0){
-        N=1000;
-        M=100;
+        N=1024*1024*1024;
+        M=1024*1024*1024;
     }
 
     MPI_Bcast(&N,1,MPI_INT,0,MPI_COMM_WORLD);
