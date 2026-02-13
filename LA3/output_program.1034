@@ -1,0 +1,53 @@
+[sc7:3093426] *** Process received signal ***
+[sc7:3093426] Signal: Segmentation fault (11)
+[sc7:3093426] Signal code: Address not mapped (1)
+[sc7:3093426] Failing at address: 0x7ffc1803e000
+[sc9:3136961] *** Process received signal ***
+[sc9:3136961] Signal: Segmentation fault (11)
+[sc9:3136961] Signal code: Address not mapped (1)
+[sc9:3136961] Failing at address: 0x7fff84b7c000
+[sc7:3093426] [ 0] /lib/x86_64-linux-gnu/libc.so.6(+0x45330)[0x7dec14645330]
+[sc7:3093426] [ 1] /lib/x86_64-linux-gnu/libc.so.6(+0x198c49)[0x7dec14798c49]
+[sc7:3093426] [ 2] /opt/sw/openmpi/lib/libopen-pal.so.80(opal_convertor_unpack+0xc8)[0x7dec14918a78]
+[sc9:3136961] [ 0] /lib/x86_64-linux-gnu/libc.so.6(+0x45330)[0x75aa3b245330]
+[sc7:3093426] [ 3] /opt/sw/openmpi/lib/libmpi.so.40(mca_pml_ob1_recv_frag_callback_match+0x434)[0x7dec14c4d074]
+[sc9:3136961] [ 1] /lib/x86_64-linux-gnu/libc.so.6(+0x198c49)[0x75aa3b398c49]
+[sc9:3136961] [ 2] /opt/sw/openmpi/lib/libopen-pal.so.80(opal_convertor_unpack+0xc8)[0x75aa3b128a78]
+[sc7:3093426] [ 4] /opt/sw/openmpi/lib/libopen-pal.so.80(+0xe8c00)[0x7dec149a5c00]
+[sc7:3093426] [ 5] /lib/x86_64-linux-gnu/libevent_core-2.1.so.7(+0x1f38c)[0x7dec148a738c]
+[sc7:3093426] [ 6] /lib/x86_64-linux-gnu/libevent_core-2.1.so.7(event_base_loop+0x4af)[0x7dec148a8faf]
+[sc9:3136961] [ 3] /opt/sw/openmpi/lib/libmpi.so.40(mca_pml_ob1_recv_frag_callback_match+0x434)[0x75aa3b799074]
+[sc7:3093426] [ 7] /opt/sw/openmpi/lib/libopen-pal.so.80(+0x2422f)[0x7dec148e122f]
+[sc7:3093426] [ 8] /opt/sw/openmpi/lib/libopen-pal.so.80(opal_progress+0x84)[0x7dec148e12e4]
+[sc9:3136961] [ 4] /opt/sw/openmpi/lib/libopen-pal.so.80(+0xe8c00)[0x75aa3b1b5c00]
+[sc9:3136961] [ 5] /lib/x86_64-linux-gnu/libevent_core-2.1.so.7(+0x1f38c)[0x75aa3b43d38c]
+[sc7:3093426] [ 9] /opt/sw/openmpi/lib/libmpi.so.40(mca_pml_ob1_recv+0x320)[0x7dec14c43ca0]
+[sc9:3136961] [ 6] /lib/x86_64-linux-gnu/libevent_core-2.1.so.7(event_base_loop+0x4af)[0x75aa3b43efaf]
+[sc7:3093426] [10] /opt/sw/openmpi/lib/libmpi.so.40(ompi_coll_base_bcast_intra_basic_linear+0x51)[0x7dec14af7cb1]
+[sc9:3136961] [ 7] /opt/sw/openmpi/lib/libopen-pal.so.80(+0x2422f)[0x75aa3b0f122f]
+[sc7:3093426] [11] /opt/sw/openmpi/lib/libmpi.so.40(ompi_coll_tuned_bcast_intra_dec_fixed+0x4a)[0x7dec14b2f3aa]
+[sc9:3136961] [ 8] /opt/sw/openmpi/lib/libopen-pal.so.80(opal_progress+0x84)[0x75aa3b0f12e4]
+[sc7:3093426] [12] /opt/sw/openmpi/lib/libmpi.so.40(MPI_Bcast+0xef)[0x7dec14a9e6bf]
+[sc7:3093426] [13] q@[0x401b81]
+[sc9:3136961] [ 9] /opt/sw/openmpi/lib/libmpi.so.40(mca_pml_ob1_recv+0x320)[0x75aa3b78fca0]
+[sc7:3093426] [14] /lib/x86_64-linux-gnu/libc.so.6(+0x2a1ca)[0x7dec1462a1ca]
+[sc9:3136961] [10] /opt/sw/openmpi/lib/libmpi.so.40(ompi_coll_base_bcast_intra_basic_linear+0x51)[0x75aa3b643cb1]
+[sc7:3093426] [15] /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0x8b)[0x7dec1462a28b]
+[sc7:3093426] [16] q@[0x401115]
+[sc7:3093426] *** End of error message ***
+[sc9:3136961] [11] /opt/sw/openmpi/lib/libmpi.so.40(ompi_coll_tuned_bcast_intra_dec_fixed+0x4a)[0x75aa3b67b3aa]
+[sc9:3136961] [12] /opt/sw/openmpi/lib/libmpi.so.40(MPI_Bcast+0xef)[0x75aa3b5ea6bf]
+[sc9:3136961] [13] k@[0x401b81]
+[sc9:3136961] [14] /lib/x86_64-linux-gnu/libc.so.6(+0x2a1ca)[0x75aa3b22a1ca]
+[sc9:3136961] [15] /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0x8b)[0x75aa3b22a28b]
+[sc9:3136961] [16] k@[0x401115]
+[sc9:3136961] *** End of error message ***
+srun: error: sc7: task 3: Segmentation fault (core dumped)
+srun: Job step aborted: Waiting up to 32 seconds for job step to finish.
+srun: error: sc9: task 5: Segmentation fault (core dumped)
+slurmstepd-sc4: error: *** STEP 1034.0 ON sc4 CANCELLED AT 2026-02-13T07:44:03 ***
+srun: error: sc6: task 2: Exited with exit code 14
+srun: error: sc5: task 1: Exited with exit code 14
+srun: error: sc10: task 6: Exited with exit code 14
+srun: error: sc8: task 4: Killed
+srun: error: sc4: task 0: Killed
