@@ -157,19 +157,19 @@ int main(int argc, char** argv){
 
     long myN=N/numranks;
     
-    long *sendcounts=(long*)malloc(numranks*sizeof(long));
-    long *recvcounts=(long*)malloc(numranks*sizeof(long));
-    long *disp=(long*)malloc(numranks*sizeof(long));
-    long *recvdisp=(long*)malloc(numranks*sizeof(long));
+    int *sendcounts=(int*)malloc(numranks*sizeof(int));
+    int *recvcounts=(int*)malloc(numranks*sizeof(int));
+    int *disp=(int*)malloc(numranks*sizeof(int));
+    int *recvdisp=(int*)malloc(numranks*sizeof(int));
 
     for(int i = 0; i<numranks; i++){
-        sendcounts[i]=myN*M;
-        recvcounts[i]=myN;
+        sendcounts[i]=(int) myN*M;
+        recvcounts[i]=(int) myN;
     }
     sendcounts[numranks-1]+=(N-myN*numranks)*M;
     recvcounts[numranks-1]+=(N-myN*numranks);
 
-    printf("Rank %d: Number of Elements: %ld Number of Rows of B: %ld\n",rank,sendcounts[rank],sendcounts[rank]/M);
+    printf("Rank %d: Number of Elements: %d Number of Rows of B: %d\n",rank,sendcounts[rank],sendcounts[rank]/M);
     disp[0]=0;
     recvdisp[0]=0;
     for(int i = 1; i<numranks; i++){
