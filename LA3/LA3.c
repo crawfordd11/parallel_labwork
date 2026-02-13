@@ -162,12 +162,8 @@ int main(int argc, char** argv){
         
         b=(double*) malloc(N*M*sizeof(double));
         c=(double*) malloc(N*sizeof(double));
-        for(int i = 0; i<M; i++){
-            for(int j = 0; j<N; j++){
-                b[i*M+j]=1.0;
-            }
-        }
         assignA(a, M, 1);
+        assignI(b, N, M);
     }
     double endalloc=MPI_Wtime();
 
@@ -237,14 +233,13 @@ int main(int argc, char** argv){
         printf("Factor Vector A ( %d x %d ):\n", M, 1);
         printMatrix(a, M, 1);
 
-        printf("Factor Matrix B ( %d x %d ):\n", N, M);
-        printMatrix(b, N, M);
+        printf("identity Matrix B ( %d x %d ):\n", N, M);
 
         printf("Product Matrix C ( %d x %d ):\n", N, 1);
         printMatrix(c, N, 1);
 
         free(a);
-        //(b);
+        //free(b);
         free(c);
     }
 
