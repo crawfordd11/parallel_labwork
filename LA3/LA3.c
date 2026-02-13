@@ -131,18 +131,18 @@ int main(int argc, char** argv){
     MPI_Bcast(&N,1,MPI_INT,0,MPI_COMM_WORLD);
     MPI_Bcast(&M,1,MPI_INT,0,MPI_COMM_WORLD);
 
-    int *a;
-    int *b;
-    int *c;
+    double *a;
+    double *b;
+    double *c;
     double startalloc=MPI_Wtime();
     if(rank==0){
-        a=(int*) malloc(M*sizeof(int));
-        b=(int*) malloc(N*M*sizeof(int));
-        c=(int*) malloc(N*sizeof(int));
+        a=(double*) malloc(M*sizeof(double));
+        b=(double*) malloc(N*M*sizeof(double));
+        c=(double*) malloc(N*sizeof(double));
         for(int i = 0; i<M; i++){
-            a[i]=2;
+            a[i]=2.0;
             for(int j = 0; j<N; j++){
-                b[i*N+j]=1;
+                b[i*N+j]=1.0;
             }
         }
     }
@@ -171,50 +171,49 @@ int main(int argc, char** argv){
     }
 
     //int *mya=(int*) malloc(M*sizeof(int));
-    int *myb=(int*) malloc(sendcounts[rank]*sizeof(int));
+    double *myb=(double*) malloc(sendcounts[rank]*sizeof(double));
 
     double startscatter=MPI_Wtime();
     //MPI_Scatter(info to send, how many per rank, what kind, where do I recieve info, how many, what kind, from who, what world am I in)
-    MPI_Bcast(a,M,MPI_INT,0,MPI_COMM_WORLD);
-    MPI_Scatterv(b,sendcounts,disp,MPI_INT,myb,sendcounts[rank],MPI_INT,0,MPI_COMM_WORLD);
+    MPI_Bcast(a,M,MPI_DOUBLE,0,MPI_COMM_WORLD);
+    MPI_Scatterv(b,sendcounts,disp,MPI_DOUBLE,myb,sendcounts[rank],MPI_DOUBLE,0,MPI_COMM_WORLD);
     double endscatter=MPI_Wtime();
 
     double startcomp=MPI_Wtime();
 
     int myRows=sendcounts[rank]/M; 
-    int* C_buf = (int*) malloc(myRows * sizeof(int));
+    double* C_buf = (double*) malloc(myRows * sizeof(double));
 
-    int result=0;
+    double result=0;
     for(int i=0; i<myRows;i++){
-        dotProduct(&a[0], &myb[i*M], &result, M);
+        dotProduct(a, myb[i*M], &result, M);
         C_buf[i]=result;
     }
     double endcomp=MPI_Wtime();
 
     double startgather=MPI_Wtime();
     //MPI_Reduce has a collector, but Allreduce sends to all
-    MPI_Gatherv(C_buf, myRows, MPI_INT, c, recvcounts, recvdisp, MPI_INT, 0, MPI_COMM_WORLD);
+    MPI_Gatherv(C_buf, myRows, MPI_DOUBLE, c, recvcounts, recvdisp, MPI_DOUBLE, 0, MPI_COMM_WORLD);
     double endgather=MPI_Wtime();
     double endfull=MPI_Wtime();
 
     //==========================================
 
-    if(rank==0){
-        printf("Rank: %d, Result: %d\n",rank,result);
+    if(rank==0){    
         printf("Full time: %f\n",endfull-startfull);
         printf("Calc time: %f\n", endcomp-startcomp);
         printf("Alloc+Initalize time: %f\n", endalloc-startalloc);
         printf("Scatter time: %f\n",endscatter-startscatter);
         printf("Gather time: %f\n",endgather-startgather);
     
-        printf("Factor Vector A ( %d x %d ):\n", m, 1);
+        printf("Factor Vector A ( %d x %d ):\n", M, 1);
         printMatrix(a, M, 1);
 
         printf("Factor Matrix B ( %d x %d ):\n", N, M);
         printMatrix(b, N, M);
 
-        printf("Product Matrix C ( %d x %d ):\n", n, 1);
-        printMatrix(c, n, 1);
+        printf("Product Matrix C ( %d x %d ):\n", N, 1);
+        printMatrix(c, N, 1);
 
         free(a);
         free(b);
