@@ -32,7 +32,7 @@ void assignB(double* mat, int n, int m){
 
 //Function to print matrix, row major order 
 //n is the number of rows, m is the number of columns
-void printMatrix(double* mat, int n, int m){
+void printMatrix(double* mat, long n, long m){
     int limit = 10;
     if(n>limit || m>limit){
         int smallerN = (n>limit) ? limit : n;
@@ -93,9 +93,9 @@ void transposeMatrix(double* A, int m, int n){
 //Function to compute the dot product of two vectors A and B of size n
 //Uses the sum of products method
 //A and B are input vectors, C is the output (single value) and n is the length of the vectors
-void dotProduct(double* A, double* B, double* C, int n){
+void dotProduct(double* A, double* B, double* C, long n){
     *C = 0;
-    for(int i=0;i<n;i++){
+    for(long i=0;i<n;i++){
         *C+=A[i]*B[i];
     }    
 }
@@ -129,7 +129,7 @@ int main(int argc, char** argv){
 
     double startfull = MPI_Wtime();
 
-    int N, M;
+    long N, M;
     if(rank==0){
         N=1024*1024*1024;
         M=1024*1024*1024;
@@ -146,8 +146,8 @@ int main(int argc, char** argv){
         a=(double*) malloc(M*sizeof(double));
         b=(double*) malloc(N*M*sizeof(double));
         c=(double*) malloc(N*sizeof(double));
-        for(int i = 0; i<M; i++){
-            for(int j = 0; j<N; j++){
+        for(long i = 0; i<M; i++){
+            for(long j = 0; j<N; j++){
                 b[i*M+j]=1.0;
             }
         }
@@ -155,12 +155,12 @@ int main(int argc, char** argv){
     }
     double endalloc=MPI_Wtime();
 
-    int myN=N/numranks;
+    long myN=N/numranks;
     
-    int *sendcounts=(int*)malloc(numranks*sizeof(int));
-    int *recvcounts=(int*)malloc(numranks*sizeof(int));
-    int *disp=(int*)malloc(numranks*sizeof(int));
-    int *recvdisp=(int*)malloc(numranks*sizeof(int));
+    long *sendcounts=(long*)malloc(numranks*sizeof(long));
+    long *recvcounts=(long*)malloc(numranks*sizeof(long));
+    long *disp=(long*)malloc(numranks*sizeof(long));
+    long *recvdisp=(long*)malloc(numranks*sizeof(long));
 
     for(int i = 0; i<numranks; i++){
         sendcounts[i]=myN*M;
@@ -169,8 +169,7 @@ int main(int argc, char** argv){
     sendcounts[numranks-1]+=(N-myN*numranks)*M;
     recvcounts[numranks-1]+=(N-myN*numranks);
 
-    printf("Rank %d: Number of Elements: %d Number of Rows of B: %d\n",rank,sendcounts[rank],sendcounts[rank]/M);
-
+    printf("Rank %d: Number of Elements: %ld Number of Rows of B: %ld\n",rank,sendcounts[rank],sendcounts[rank]/M);
     disp[0]=0;
     recvdisp[0]=0;
     for(int i = 1; i<numranks; i++){
@@ -189,11 +188,11 @@ int main(int argc, char** argv){
 
     double startcomp=MPI_Wtime();
 
-    int myRows=sendcounts[rank]/M; 
+    long myRows=sendcounts[rank]/M; 
     double* C_buf = (double*) malloc(myRows * sizeof(double));
 
     double result=0;
-    for(int i=0; i<myRows;i++){
+    for(long i=0; i<myRows;i++){
         dotProduct(a, &myb[i*M], &result, M);
         C_buf[i]=result;
     }
