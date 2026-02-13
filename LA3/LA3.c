@@ -135,8 +135,8 @@ int main(int argc, char** argv){
         M=1024*1024*1024;
     }
 
-    MPI_Bcast(&N,1,MPI_INT,0,MPI_COMM_WORLD);
-    MPI_Bcast(&M,1,MPI_INT,0,MPI_COMM_WORLD);
+    MPI_Bcast(&N,1,MPI_LONG,0,MPI_COMM_WORLD);
+    MPI_Bcast(&M,1,MPI_LONG,0,MPI_COMM_WORLD);
 
     double *a;
     double *b;
