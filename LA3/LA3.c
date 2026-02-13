@@ -43,7 +43,7 @@ void printMatrix(double* mat, int n, int m){
                 printf("\n");
             }
             for(int j = 0; j < smallerM; j++){
-                if(j==limit-1 && i==limit-1){
+                if(j==smallerM-1 && i==smallerN-1){
                     printf("   ... ");
                     printf("%6.2f ", mat[(n*m)-1]);
                 }
