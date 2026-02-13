@@ -44,27 +44,70 @@ void assignB(double* mat, int n, int m){
     }
 }
 
-//Function to print matrix, row major order
-void printMatrix(double* mat, int n, int m){
-    for(int i = 0; i < n; i++){
-        for(int j = 0; j < m; j++){
-            printf("%6.2f ", mat[i*m + j]);
+//Function to assign values to matrix
+// Here we assign B[i][j] to identity regardless of dimensions
+void assignI(double* mat, int n, int m){
+    for(int j = 0; j < m; j++){
+        for(int i = 0; i < n; i++){
+            if(i==j){
+                mat[i*m + j] = 1.0;
+            }
+            else{
+                mat[i*m + j] = 0.0;
+            }
         }
-        printf("\n");
     }
 }
+
+void printMatrix(double* mat, int n, int m){
+    int limit = 10;
+    if(n>limit || m>limit){
+        int smallerN = (n>limit) ? limit : n;
+        int smallerM = (m>limit) ? limit : m;
+        for(int i = 0; i < smallerN; i++){
+            if(i==limit-1){
+                for(int j = 0; j < smallerM+1; j++){printf("   ... ");}
+                printf("\n");
+            }
+            for(int j = 0; j < smallerM; j++){
+                if(j==smallerM-1 && i==smallerN-1){
+                    printf("   ... ");
+                    printf("%6.2f ", mat[(n*m)-1]);
+                }
+                else if(j==limit-1){
+                    printf("   ... ");
+                    printf("%6.2f ", mat[i*m + m-1]);
+                }
+                else{
+                    printf("%6.2f ", mat[i*m + j]);
+                }
+            }
+            printf("\n");
+        }
+    }
+    else{
+        for(int i = 0; i < n; i++){
+            for(int j = 0; j < m; j++){
+                printf("%6.2f ", mat[i*m + j]);
+            }
+            printf("\n");
+        }
+    }
+    
+}
+
 
 //Main function
 int main(int argc, char **argv){
     
-    int n = 3, m = 3, p = 3; // Example dimensions to match assingment
+    int n = 1000, m = 1000, p = 1; // Example dimensions to match assingment
     double* A = (double*)malloc(n * m * sizeof(double));
     double* B = (double*)malloc(m * p * sizeof(double));    
     assignA(A, n, m);
-    assignB(B, m, p);
+    assignI(B, m, p);
     double* C = mm(A, B, n, m, p);
 
-    printf("Factor Matrix A ( %d x %d ):\n", n, p);
+    printf("Factor Matrix A ( %d x %d ):\n", n, m);
     printMatrix(A, n, m);
 
     printf("Factor Matrix B ( %d x %d ):\n", m, p);
