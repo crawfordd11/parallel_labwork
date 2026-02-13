@@ -147,7 +147,7 @@ int main(int argc, char** argv){
 
     int N, M;
     if(rank==0){
-        N=1024*1024;
+        N=1024*512;
         M=1024;
     }
 
@@ -233,7 +233,7 @@ int main(int argc, char** argv){
         printf("Factor Vector A ( %d x %d ):\n", M, 1);
         printMatrix(a, M, 1);
 
-        printf("identity Matrix B ( %d x %d ):\n", N, M);
+        printf("Identity Matrix B ( %d x %d ):\n", N, M);
 
         printf("Product Matrix C ( %d x %d ):\n", N, 1);
         printMatrix(c, N, 1);
