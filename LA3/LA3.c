@@ -186,7 +186,7 @@ int main(int argc, char** argv){
 
     double result=0;
     for(int i=0; i<myRows;i++){
-        dotProduct(a, myb[i*M], &result, M);
+        dotProduct(a, &myb[i*M], &result, M);
         C_buf[i]=result;
     }
     double endcomp=MPI_Wtime();
