@@ -104,8 +104,8 @@ int main(int argc, char **argv){
     double startfull = MPI_Wtime();
 
     int n = 1000, m = 1000, p = 1; // Example dimensions to match assingment
-    double* A = (double*)malloc(n * m * sizeof(double));
-    double* B = (double*)malloc(m * p * sizeof(double));    
+    double* A = (double*)malloc(m * p * sizeof(double));
+    double* B = (double*)malloc(n * m * sizeof(double));    
     assignA(A, m, p);
     assignI(B, n, m);
     double* C = mm(B, A, n, m, p);
@@ -118,7 +118,7 @@ int main(int argc, char **argv){
 
     printf("Factor Matrix B ( %d x %d ):\n", n, m);
     printMatrix(B, n, m);
-    
+
     printf("Product Matrix C ( %d x %d ):\n", n, p);
     printMatrix(C, n, p);
 
