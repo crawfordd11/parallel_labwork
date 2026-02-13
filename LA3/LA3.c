@@ -30,6 +30,21 @@ void assignB(double* mat, int n, int m){
     }
 }
 
+//Function to assign values to matrix
+// Here we assign B[i][j] to identity regardless of dimensions
+void assignI(double* mat, int n, int m){
+    for(int j = 0; j < m; j++){
+        for(int i = 0; i < n; i++){
+            if(i==j){
+                mat[i*m + j] = 1.0;
+            }
+            else{
+                mat[i*m + j] = 0.0;
+            }
+        }
+    }
+}
+
 //Function to print matrix, row major order 
 //n is the number of rows, m is the number of columns
 void printMatrix(double* mat, int n, int m){
@@ -132,19 +147,19 @@ int main(int argc, char** argv){
 
     int N, M;
     if(rank==0){
-        N=1000;
-        M=1000;
+        N=1024*1024;
+        M=1024;
     }
 
     MPI_Bcast(&N,1,MPI_INT,0,MPI_COMM_WORLD);
     MPI_Bcast(&M,1,MPI_INT,0,MPI_COMM_WORLD);
 
-    double *a;
+    double *a=(double*) malloc(M*sizeof(double));
     double *b;
     double *c;
     double startalloc=MPI_Wtime();
     if(rank==0){
-        a=(double*) malloc(M*sizeof(double));
+        
         b=(double*) malloc(N*M*sizeof(double));
         c=(double*) malloc(N*sizeof(double));
         for(int i = 0; i<M; i++){
@@ -186,6 +201,10 @@ int main(int argc, char** argv){
     //MPI_Scatter(info to send, how many per rank, what kind, where do I recieve info, how many, what kind, from who, what world am I in)
     MPI_Bcast(a,M,MPI_DOUBLE,0,MPI_COMM_WORLD);
     MPI_Scatterv(b,sendcounts,disp,MPI_DOUBLE,myb,sendcounts[rank],MPI_DOUBLE,0,MPI_COMM_WORLD);
+    if(rank == 0){
+        free(b);
+        b = NULL;
+    }
     double endscatter=MPI_Wtime();
 
     double startcomp=MPI_Wtime();
@@ -225,7 +244,7 @@ int main(int argc, char** argv){
         printMatrix(c, N, 1);
 
         free(a);
-        free(b);
+        //(b);
         free(c);
     }
 
