@@ -103,7 +103,7 @@ int main(int argc, char **argv){
     
     double startfull = MPI_Wtime();
 
-    int n = 1000, m = 1000, p = 1; // Example dimensions to match assingment
+    int n = 1024*1024, m = 1024, p = 1; // Example dimensions to match assingment
     double* A = (double*)malloc(m * p * sizeof(double));
     double* B = (double*)malloc(n * m * sizeof(double));    
     assignA(A, m, p);
