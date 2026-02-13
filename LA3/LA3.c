@@ -142,7 +142,7 @@ int main(int argc, char** argv){
         for(int i = 0; i<M; i++){
             a[i]=2.0;
             for(int j = 0; j<N; j++){
-                b[i*N+j]=1.0;
+                b[i*M+j]=1.0;
             }
         }
     }
@@ -165,6 +165,7 @@ int main(int argc, char** argv){
     printf("Rank %d: Number of Elements: %d Number of Rows of B: %d\n",rank,sendcounts[rank],sendcounts[rank]/M);
 
     disp[0]=0;
+    recvdisp[0]=0;
     for(int i = 1; i<numranks; i++){
         disp[i]=disp[i-1]+sendcounts[i-1];
         recvdisp[i]=recvdisp[i-1]+recvcounts[i-1];
