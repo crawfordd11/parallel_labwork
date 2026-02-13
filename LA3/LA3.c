@@ -34,11 +34,13 @@ void assignB(double* mat, int n, int m){
 //n is the number of rows, m is the number of columns
 void printMatrix(double* mat, int n, int m){
     if(n>10 || m>10){
-        for(int i = 0; i < 10; i++){
+        int smallerN = (n>10) ? 10 : n;
+        int smallerM = (m>10) ? 10 : m;
+        for(int i = 0; i < smallerN; i++){
             if(i==9){
-                    printf("... ... ... ... ... \n");
+                    printf("...   ...   ...   ...   ...   ...   ...   ...   ...   ...   ...   \n");
             }
-            for(int j = 0; j < 10; j++){
+            for(int j = 0; j < smallerM; j++){
                 if(j==9){
                     printf("... ");
                     printf("%6.2f ", mat[i*m + m-1]);
@@ -124,8 +126,8 @@ int main(int argc, char** argv){
 
     int N, M;
     if(rank==0){
-        N=1000;
-        M=1000;
+        N=100;
+        M=100;
     }
 
     MPI_Bcast(&N,1,MPI_INT,0,MPI_COMM_WORLD);
