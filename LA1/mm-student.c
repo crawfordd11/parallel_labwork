@@ -103,16 +103,24 @@ int main(int argc, char **argv){
     
     double startfull = MPI_Wtime();
 
+    double startalloc = MPI_Wtime();
     int n = 1024*16, m = 1024*16, p = 1; // Example dimensions to match assingment
     double* A = (double*)malloc(m * p * sizeof(double));
     double* B = (double*)malloc(n * m * sizeof(double));    
     assignA(A, m, p);
     assignI(B, n, m);
+    double endalloc = MPI_Wtime();
+
+    double startcomp = MPI_Wtime();
     double* C = mm(B, A, n, m, p);
+    double endcomp = MPI_Wtime();
 
     double endfull = MPI_Wtime();
 
     printf("Full time: %f\n",endfull-startfull);
+    printf("Calc time: %f\n", endcomp-startcomp);
+    printf("Alloc+Initalize time: %f\n", endalloc-startalloc);
+
     printf("Factor Matrix A ( %d x %d ):\n", m, p);
     printMatrix(A, m, p);
 
