@@ -224,6 +224,7 @@ int main(int argc, char** argv){
     //==========================================
 
     if(rank==0){    
+	printf("Number of Ranks: %d\n",numranks);
         printf("Full time: %f\n",endfull-startfull);
         printf("Calc time: %f\n", endcomp-startcomp);
         printf("Alloc+Initalize time: %f\n", endalloc-startalloc);

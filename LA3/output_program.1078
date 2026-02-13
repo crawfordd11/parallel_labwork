@@ -1,0 +1,31 @@
+Number of Ranks: 6
+Full time: 7.501723
+Calc time: 0.148405
+Alloc+Initalize time: 5.519447
+Scatter time: 1.822973
+Gather time: 0.000137
+Factor Vector A ( 16384 x 1 ):
+  1.00 
+  2.00 
+  3.00 
+  4.00 
+  5.00 
+  6.00 
+  7.00 
+  8.00 
+  9.00 
+   ...    ... 
+   ... 16384.00 
+Identity Matrix B ( 16384 x 16384 ):
+Product Matrix C ( 16384 x 1 ):
+  1.00 
+  2.00 
+  3.00 
+  4.00 
+  5.00 
+  6.00 
+  7.00 
+  8.00 
+  9.00 
+   ...    ... 
+   ... 16384.00 
