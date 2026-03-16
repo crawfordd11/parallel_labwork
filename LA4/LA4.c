@@ -1,6 +1,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
+#include <mpi.h>
+#include "LA4.h"
 
 extern int* imageToMat(char* name, int* dims);
 extern void matToImage(char* name, int* mat, int* dims);
