@@ -17,12 +17,12 @@ int main( int argc, char** argv ) {
     int *matrix;
     int *temp;
     char *name="image.jpg";
-    int *dims;
-    dims=(int*) malloc(2*sizeof(int));
-
+    int *dims = (int*) malloc(2*sizeof(int));
+   
     //read image
     if(rank==0){
         printf("Reading image...\n");
+        
         matrix=imageToMat(name,dims);
         int height=dims[0];
         int width=dims[1];
