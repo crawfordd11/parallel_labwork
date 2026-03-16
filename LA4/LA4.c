@@ -1,7 +1,4 @@
-#include <stdlib.h>
-#include <stdio.h>
-#include <math.h>
-#include <mpi.h>
+
 #include "LA4.h"
 
 extern int* imageToMat(char* name, int* dims);
@@ -65,8 +62,8 @@ int main( int argc, char** argv ) {
 
     temp=(int*)malloc(numrows*width*sizeof(int));
 
-    //create kernel
-    int size=51;
+    //create kernel size history: 51
+    int size=3;
     int range=size/2;
     double *gKernel[size];
     for (int i=0;i<size;i++){
