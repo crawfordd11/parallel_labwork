@@ -29,19 +29,17 @@ int main( int argc, char** argv ) {
         int width=dims[1];
     }
     
-
+    //broadcast dimensions and image
     double startbcast=MPI_Wtime();
 
-/*TODO 1 Bcast the dimensions of image to all processes.  */
     MPI_Bcast(dims,2,MPI_INT,0,MPI_COMM_WORLD);
-
- /* TODO 2 Allocate and scatter the image to all processes.  */
     if(rank!=0) matrix = (int*) malloc(dims[0]*dims[1]*sizeof(int));
-
 
     MPI_Bcast(matrix,dims[0]*dims[1],MPI_INT,0,MPI_COMM_WORLD);
 
     double endbcast=MPI_Wtime();
+
+    //initalize ranks and calculate convolution
     double startcalc=MPI_Wtime();
 
     //check for proper number of processes
@@ -55,8 +53,6 @@ int main( int argc, char** argv ) {
     }
 
 
-  
-    int *temp;
     int height=dims[0];
     int width=dims[1];  
     int numrows=dims[0] / numranks;
@@ -97,6 +93,7 @@ int main( int argc, char** argv ) {
     
     double endcalc=MPI_Wtime();
     
+
     double startgather=MPI_Wtime();
     //mpi gather
     MPI_Gather(temp,numrows*width,MPI_INT,matrix,numrows*width,MPI_INT,0,MPI_COMM_WORLD);
