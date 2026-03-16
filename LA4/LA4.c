@@ -30,6 +30,8 @@ int main( int argc, char** argv ) {
     
     //broadcast dimensions and image
     double startbcast=MPI_Wtime();
+    
+    printf("Broadcasting image...\n");
 
     MPI_Bcast(dims,2,MPI_INT,0,MPI_COMM_WORLD);
     if(rank!=0) matrix = (int*) malloc(dims[0]*dims[1]*sizeof(int));
@@ -40,6 +42,8 @@ int main( int argc, char** argv ) {
 
     //initalize ranks and calculate convolution
     double startcalc=MPI_Wtime();
+
+    printf("Calculating convolution...\n");
 
     //check for proper number of processes
     if(dims[0]%numranks !=0){
@@ -94,6 +98,9 @@ int main( int argc, char** argv ) {
     
 
     double startgather=MPI_Wtime();
+
+    printf("Gathering results...\n");
+
     //mpi gather
     MPI_Gather(temp,numrows*width,MPI_INT,matrix,numrows*width,MPI_INT,0,MPI_COMM_WORLD);
     //save image
