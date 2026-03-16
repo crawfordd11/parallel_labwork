@@ -6,6 +6,15 @@ extern int* imageToMat(char* name, int* dims);
 extern void matToImage(char* name, int* mat, int* dims);
 
 int main( int argc, char** argv ) {
+
+    int rank,numranks;
+    MPI_Init(&argc,&argv);
+    MPI_Comm_size(MPI_COMM_WORLD,&numranks);
+    MPI_Comm_rank(MPI_COMM_WORLD,&rank);
+    MPI_Status stat;
+
+    double startfull=MPI_Wtime();
+
     int *matrix;
     int *temp;
     char *name="image.jpg";
@@ -13,12 +22,60 @@ int main( int argc, char** argv ) {
     dims=(int*) malloc(2*sizeof(int));
 
     //read image
-    matrix=imageToMat(name,dims);
-    int height=dims[0];
-    int width=dims[1];
+    if(rank==0){
+        printf("Reading image...\n");
+        matrix=imageToMat(name,dims);
+        int height=dims[0];
+        int width=dims[1];
+    }
+    
 
-    int k=7;
-    temp=(int*)malloc(height*width*sizeof(int));
+    double startbcast=MPI_Wtime();
+
+/*TODO 1 Bcast the dimensions of image to all processes.  */
+    MPI_Bcast(dims,2,MPI_INT,0,MPI_COMM_WORLD);
+
+ /* TODO 2 Allocate and scatter the image to all processes.  */
+    if(rank!=0) matrix = (int*) malloc(dims[0]*dims[1]*sizeof(int));
+
+
+    MPI_Bcast(matrix,dims[0]*dims[1],MPI_INT,0,MPI_COMM_WORLD);
+
+    double endbcast=MPI_Wtime();
+    double startcalc=MPI_Wtime();
+
+    //check for proper number of processes
+    if(dims[0]%numranks !=0){
+        if(rank==0) printf("Error: Height does not divide evenly by number of processes.\n");
+        free(dims);
+        free(matrix);
+        free(temp);
+        MPI_Finalize();
+        return 0;
+    }
+
+
+  
+    int *temp;
+    int height=dims[0];
+    int width=dims[1];  
+    int numrows=dims[0] / numranks;
+
+    int myRowStart=rank*numrows;
+    int myRowEnd=(rank+1)*numrows;
+    if(rank==numranks-1) myRowEnd=dims[0];
+
+    temp=(int*)malloc(numrows*width*sizeof(int));
+
+    //create kernel
+    int size=51;
+    int range=size/2;
+    double *gKernel[size];
+    for (int i=0;i<size;i++){
+        gKernel[i]=(double*)malloc(size*sizeof(double));
+    }
+    
+    int k=range;
 
     //pick a pixel (i,j)
     for(int i=0;i<height;i++){
@@ -38,12 +95,29 @@ int main( int argc, char** argv ) {
         }
     }
     
-
+    double endcalc=MPI_Wtime();
+    
+    double startgather=MPI_Wtime();
+    //mpi gather
+    MPI_Gather(temp,numrows*width,MPI_INT,matrix,numrows*width,MPI_INT,0,MPI_COMM_WORLD);
     //save image
-    matToImage("processedImage.jpg",temp,dims);
+    if(rank==0) matToImage("processedImage.jpg",matrix,dims);
+
+    double endgather=MPI_Wtime();
+
+    //cleanup    
+    double endfull=MPI_Wtime();
+
+    printf("Number of Ranks: %d\n",numranks);
+    printf("Full time: %f\n",endfull-startfull);
+    printf("Bcast time: %f\n",endbcast-startbcast);
+    printf("Calc time: %f\n", endcalc-startcalc);
+    printf("Gather time: %f\n",endgather-startgather);  
 
     free(dims);
     free(matrix);
     free(temp);
+    MPI_Finalize();
+
     return 0;
 }
