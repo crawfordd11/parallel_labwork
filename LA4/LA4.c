@@ -24,8 +24,6 @@ int main( int argc, char** argv ) {
         printf("Reading image...\n");
         
         matrix=imageToMat(name,dims);
-        int height=dims[0];
-        int width=dims[1];
     }
     
     //broadcast dimensions and image
@@ -34,6 +32,12 @@ int main( int argc, char** argv ) {
     printf("Broadcasting image...\n");
 
     MPI_Bcast(dims,2,MPI_INT,0,MPI_COMM_WORLD);
+
+    /* refactor later
+        int height=dims[0];
+        int width=dims[1];
+    */
+
     if(rank!=0) matrix = (int*) malloc(dims[0]*dims[1]*sizeof(int));
 
     MPI_Bcast(matrix,dims[0]*dims[1],MPI_INT,0,MPI_COMM_WORLD);

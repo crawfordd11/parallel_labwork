@@ -6,18 +6,19 @@ using namespace cv;
 using namespace std;
 
 extern "C" int* imageToMat(char* filename,int* dims){
+    if(! image.data ) // Check for invalid input
+    {
+        cout <<  "Could not open or find the image" << std::endl ;
+        return nullptr;
+    }
+
     Mat image;
     image=imread(filename,IMREAD_COLOR);
 
     Mat gray_image;
     cvtColor(image,gray_image,COLOR_BGR2GRAY);
 
-    if(! image.data ) // Check for invalid input
-    {
-        cout <<  "Could not open or find the image" << std::endl ;
-        int* temp;
-        return temp;
-    }
+    
     int width=gray_image.size().width;
     int height=gray_image.size().height;
     dims[0]=height;
