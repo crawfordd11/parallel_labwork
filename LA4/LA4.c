@@ -59,7 +59,7 @@ int main( int argc, char** argv ) {
         gKernel[i]=(double*)malloc(size*sizeof(double));
     }
     
-    //fill kernel
+    //fill standard box kernel
     for(int i=0;i<size;i++){
         for(int j=0;j<size;j++){
             gKernel[i][j]=1.0/(size*size);
@@ -74,15 +74,13 @@ int main( int argc, char** argv ) {
             int localIndex=(i-myRowStart)*width+j;
             //setup for the convolution
             double sum=0;
-            int counter=0;
             for(int u=-k;u<=k;u++){
                 for(int v=-k;v<=k;v++){
                     if(i-u<0 || j-v<0 || i-u>=height ||j-v>=width) continue;
-                    sum+=1*matrix[(i-u)*width+(j-v)];
-                    counter++;
+                    sum+=gKernel[u+k][v+k]*matrix[(i+u)*width+(j+v)];
                 }
             }
-            temp[localIndex]=(int)(sum/counter);
+            temp[localIndex]=(int)(sum+0.5); //rounding
         }
     }
     
