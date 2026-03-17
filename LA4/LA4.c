@@ -121,19 +121,19 @@ int main( int argc, char** argv ) {
 
     double endgather=MPI_Wtime();
 
-    //cleanup    
+    //cleanup
+    double endfull=MPI_Wtime();
+
+    printf("Number of Ranks: %d\n",numranks);
+    printf("Full time: %f\n",endfull-startfull);
+    printf("Bcast time: %f\n",endbcast-startbcast);
+    printf("Calc time: %f\n", endcalc-startcalc);
+    printf("Gather time: %f\n",endgather-startgather);  
 
     free(dims);
     free(matrix);
     free(temp);
     for(int i=0; i<size; i++) free(gKernel[i]);
-
-    printf("Number of Ranks: %d\n",numranks);
-    double endfull=MPI_Wtime();
-    printf("Full time: %f\n",endfull-startfull);
-    printf("Bcast time: %f\n",endbcast-startbcast);
-    printf("Calc time: %f\n", endcalc-startcalc);
-    printf("Gather time: %f\n",endgather-startgather);  
 
     MPI_Finalize();
 

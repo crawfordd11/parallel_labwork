@@ -8,4 +8,3 @@
 #SBATCH --export=ALL
 
 srun ./LA4.x
-squeue
