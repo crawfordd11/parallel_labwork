@@ -1,4 +1,3 @@
-
 #include "LA4.h"
 
 extern int* imageToMat(char* name, int* dims);
@@ -92,7 +91,7 @@ int main( int argc, char** argv ) {
     //pick a pixel (i,j)
     for(int i=myRowStart;i<myRowEnd;i++){
         for(int j=0;j<width;j++){
-            int index=i*width+j;
+            int localIndex=(i-myRowStart)*width+j;
             //setup for the convolution
             double sum=0;
             int counter=0;
@@ -103,12 +102,10 @@ int main( int argc, char** argv ) {
                     counter++;
                 }
             }
-            temp[index]=(int)(sum/counter);
+            temp[localIndex]=(int)(sum/counter);
         }
     }
     
-    
-
     double endcalc=MPI_Wtime();
     
 
