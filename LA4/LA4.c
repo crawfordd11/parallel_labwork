@@ -52,10 +52,12 @@ int main( int argc, char** argv ) {
     //check for proper number of processes
     if(dims[0]%numranks !=0){
         if(rank==0) printf("Error: Height does not divide evenly by number of processes.\n");
-        free(dims);
-        free(matrix);
-        MPI_Finalize();
-        return 0;
+        
+        MPI_Abort(MPI_COMM_WORLD, 1);
+        // free(dims);
+        // free(matrix);
+        // MPI_Finalize();
+        // return 0;
     }
 
 
