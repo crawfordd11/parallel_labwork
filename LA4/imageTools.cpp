@@ -60,9 +60,9 @@ extern "C" void matToImage(char* filename, int* mat, int* dims){
             image.at<uchar>(i,j) = (int)mat[i*width+j];
         }
     } 
-    //namedWindow( "Processed Image", WINDOW_AUTOSIZE );// Create a window for display.
+    namedWindow( "Processed Image", WINDOW_AUTOSIZE );// Create a window for display.
 
-    //imshow( "Processed Image", image );  // Show our image inside it.
+    imshow( "Processed Image", image );  // Show our image inside it.
     imwrite(filename,image);
     //waitKey(0); // Wait for a keystroke in the window
     return;

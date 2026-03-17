@@ -54,7 +54,6 @@ int main( int argc, char** argv ) {
         if(rank==0) printf("Error: Height does not divide evenly by number of processes.\n");
         free(dims);
         free(matrix);
-        free(temp);
         MPI_Finalize();
         return 0;
     }
@@ -68,20 +67,28 @@ int main( int argc, char** argv ) {
     int myRowEnd=(rank+1)*numrows;
     if(rank==numranks-1) myRowEnd=dims[0];
 
-    temp=(int*)malloc(numrows*width*sizeof(int));
+    
 
     //create kernel size history: 51
     int size=3;
     int range=size/2;
+    int k=range;//consider removing later, but it makes the code more readable
     double *gKernel[size];
     for (int i=0;i<size;i++){
         gKernel[i]=(double*)malloc(size*sizeof(double));
     }
     
-    int k=range;
+    //fill kernel
+    for(int i=0;i<size;i++){
+        for(int j=0;j<size;j++){
+            gKernel[i][j]=1.0/(size*size);
+        }
+    }
+
+    temp=(int*)malloc(numrows*width*sizeof(int));
 
     //pick a pixel (i,j)
-    for(int i=0;i<height;i++){
+    for(int i=myRowStart;i<myRowEnd;i++){
         for(int j=0;j<width;j++){
             int index=i*width+j;
             //setup for the convolution
@@ -98,6 +105,8 @@ int main( int argc, char** argv ) {
         }
     }
     
+    
+
     double endcalc=MPI_Wtime();
     
 
@@ -113,7 +122,6 @@ int main( int argc, char** argv ) {
     double endgather=MPI_Wtime();
 
     //cleanup    
-    double endfull=MPI_Wtime();
 
     printf("Number of Ranks: %d\n",numranks);
     printf("Full time: %f\n",endfull-startfull);
@@ -124,6 +132,9 @@ int main( int argc, char** argv ) {
     free(dims);
     free(matrix);
     free(temp);
+    for(int i=0; i<size; i++) free(gKernel[i]);
+
+    double endfull=MPI_Wtime();
     MPI_Finalize();
 
     return 0;
