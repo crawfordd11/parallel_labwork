@@ -76,7 +76,7 @@ int main( int argc, char** argv ) {
             double sum=0;
             for(int u=-k;u<=k;u++){
                 for(int v=-k;v<=k;v++){
-                    if(i-u<0 || j-v<0 || i-u>=height ||j-v>=width) continue;
+                    if(i+u<0 || j+v<0 || i+u>=height ||j+v>=width) continue;
                     sum+=gKernel[u+k][v+k]*matrix[(i+u)*width+(j+v)];
                 }
             }
