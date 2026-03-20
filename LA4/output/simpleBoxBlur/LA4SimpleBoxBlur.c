@@ -51,7 +51,7 @@ int main( int argc, char** argv ) {
     if(rank==numranks-1) myRowEnd=dims[0];
 
     //create kernel size history: 51
-    int size=31;
+    int size=11;
     int range=size/2;
     int k=range;//consider removing later, but it makes the code more readable
     double *gKernel[size];
