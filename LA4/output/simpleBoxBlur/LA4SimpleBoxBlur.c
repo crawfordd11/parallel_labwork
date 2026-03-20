@@ -76,7 +76,13 @@ int main( int argc, char** argv ) {
             double sum=0;
             for(int u=-k;u<=k;u++){
                 for(int v=-k;v<=k;v++){
-                    if(i+u<0 || j+v<0 || i+u>=height ||j+v>=width) continue;
+                    //edge case managment: reflecting the image across the edge
+                    if(i+u<0 || j+v<0 || i+u>=height || j+v>=width){
+                        if(i+u<0) u=-u;
+                        if(j+v<0) v=-v;
+                        if(i+u>=height) u=-u;
+                        if(j+v>=width) v=-v;
+                    }
                     sum+=gKernel[u+k][v+k]*matrix[(i+u)*width+(j+v)];
                 }
             }
