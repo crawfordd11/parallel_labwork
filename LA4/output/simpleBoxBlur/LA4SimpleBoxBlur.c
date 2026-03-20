@@ -84,9 +84,9 @@ int main( int argc, char** argv ) {
                     reflectHeight = (i+u<0)||(i+u>=height);
                     reflectWidth = (j+v<0)||(j+v>=width);
 
-                    if(reflectHeight && reflectWidth) sum+=gKernel[u+k][v+k]*matrix[(i+(-1*u))*width+(j+(-1*v))];
-                    else if(reflectHeight) sum+=gKernel[u+k][v+k]*matrix[(i+(-1*u))*width+(j-v)];
-                    else if(reflectWidth) sum+=gKernel[u+k][v+k]*matrix[(i-u)*width+(j+(-1*v))];
+                    if(reflectHeight && reflectWidth) sum+=gKernel[u+k][v+k]*matrix[(i-u)*width+(j-v)];
+                    else if(reflectHeight) sum+=gKernel[u+k][v+k]*matrix[(i-u)*width+(j+v)];
+                    else if(reflectWidth) sum+=gKernel[u+k][v+k]*matrix[(i+u)*width+(j-v)];
                     else sum+=gKernel[u+k][v+k]*matrix[(i+u)*width+(j+v)];
                 }
             }
