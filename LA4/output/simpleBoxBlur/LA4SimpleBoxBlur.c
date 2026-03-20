@@ -68,9 +68,8 @@ int main( int argc, char** argv ) {
 
     temp=(int*)malloc(numrows*width*sizeof(int));
 
-    //set reflectors
-    bool reflectHeight = false;
-    bool reflectWidth = false;
+    //create reflectors
+    int new_i, new_j;
 
     //pick a pixel (i,j)
     for(int i=myRowStart;i<myRowEnd;i++){
@@ -81,13 +80,18 @@ int main( int argc, char** argv ) {
             for(int u=-k;u<=k;u++){
                 for(int v=-k;v<=k;v++){
                     //edge case managment: reflecting the image across the edge
-                    reflectHeight = (i+u<0)||(i+u>=height);
-                    reflectWidth = (j+v<0)||(j+v>=width);
+                    new_i = i + u;
+                    new_j = j + v;
 
-                    if(reflectHeight && reflectWidth) sum+=gKernel[u+k][v+k]*matrix[(i-u)*width+(j-v)];
-                    else if(reflectHeight) sum+=gKernel[u+k][v+k]*matrix[(i-u)*width+(j+v)];
-                    else if(reflectWidth) sum+=gKernel[u+k][v+k]*matrix[(i+u)*width+(j-v)];
-                    else sum+=gKernel[u+k][v+k]*matrix[(i+u)*width+(j+v)];
+                    // Reflect height
+                    if (new_i < 0) new_i = -new_i;
+                    if (new_i >= height) new_i = 2 * height - new_i - 2;
+
+                    // Reflect width
+                    if (new_j < 0) new_j = -new_j;
+                    if (new_j >= width) new_j = 2 * width - new_j - 2;
+
+                    sum += gKernel[u+k][v+k] * matrix[new_i * width + new_j];
                 }
             }
             temp[localIndex]=(int)(sum+0.5); //rounding
