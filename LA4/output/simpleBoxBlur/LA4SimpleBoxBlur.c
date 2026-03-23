@@ -51,7 +51,7 @@ int main( int argc, char** argv ) {
     if(rank==numranks-1) myRowEnd=dims[0];
 
     //create kernel size history: 51
-    int size=31;
+    int size=11;
     int range=size/2;
     int k=range;//consider removing later, but it makes the code more readable
     double *gKernel[size];
@@ -68,6 +68,9 @@ int main( int argc, char** argv ) {
 
     temp=(int*)malloc(numrows*width*sizeof(int));
 
+    //create reflectors
+    int new_i, new_j;
+
     //pick a pixel (i,j)
     for(int i=myRowStart;i<myRowEnd;i++){
         for(int j=0;j<width;j++){
@@ -76,8 +79,19 @@ int main( int argc, char** argv ) {
             double sum=0;
             for(int u=-k;u<=k;u++){
                 for(int v=-k;v<=k;v++){
-                    if(i+u<0 || j+v<0 || i+u>=height ||j+v>=width) continue;
-                    sum+=gKernel[u+k][v+k]*matrix[(i+u)*width+(j+v)];
+                    //edge case managment: reflecting the image across the edge
+                    new_i = i + u;
+                    new_j = j + v;
+
+                    // Reflect height
+                    if (new_i < 0) new_i = -new_i;
+                    if (new_i >= height) new_i = 2 * height - new_i - 2;
+
+                    // Reflect width
+                    if (new_j < 0) new_j = -new_j;
+                    if (new_j >= width) new_j = 2 * width - new_j - 2;
+
+                    sum += gKernel[u+k][v+k] * matrix[new_i * width + new_j];
                 }
             }
             temp[localIndex]=(int)(sum+0.5); //rounding
