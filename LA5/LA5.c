@@ -8,7 +8,7 @@ int is_prime(int n);
 int main(int argc, char** argv){
 
     int n=10000000;
-    int numprimes = 0;
+    int numprimes = 2; //account for 2 and 3
     int i;
     for (i = 5; i <= n; i+=6)
     {
