@@ -7,9 +7,10 @@ int is_prime(int n);
 
 int main(int argc, char** argv){
 
-    int n=10000000;
+    int n=10000000;// there should be 664579 primes less than or equal to 10 million
     int numprimes = 2; //account for 2 and 3
     int i;
+    #pragma omp parallel for private(i) reduction(+:numprimes)
     for (i = 5; i <= n; i+=6)
     {
         if (is_prime(i) == 1) numprimes ++;
@@ -30,9 +31,12 @@ int is_prime(int n)
     else if (n % 2 == 0) return 0;
     else if (n % 3 == 0) return 0;
 
-    int i;
-    for(i=5;i<=(int)(sqrt((double) n));i+=6)
+    //this would cause multiple problems: omp parallel for private(i) schedule(dynamic)
+    for(int i=5;i<=(int)(sqrt((double) n));i+=6)
+    {
         if (n%i==0) return 0;
         if (n%(i+2)==0) return 0;
+    }
+        
     return 1;
 }
