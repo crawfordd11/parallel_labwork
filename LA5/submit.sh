@@ -4,7 +4,7 @@
 #SBATCH --exclude=sc3
 #SBATCH --nodes=10
 #SBATCH --ntasks-per-node=1
-#SBATCH --time=00:00:10
+#SBATCH --time=00:01:00
 #SBATCH --output=output_program.%j
 #SBATCH --export=ALL
 
