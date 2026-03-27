@@ -32,7 +32,7 @@ int main(int argc, char** argv){
 
     int n=10000000;// there should be 664579 primes less than or equal to 10 million
     int numprimes = 0;
-    int chunk_size = n/numranks; //arbitrary chunk size, can be tuned for performance
+    int chunk_size = 50000; //arbitrary chunk size, can be tuned for performance
     int total_chunks = (n + chunk_size - 1) / chunk_size; // ceiling division to cover all numbers
     int chunk_start = 0;
     int chunk_end = chunk_size;
