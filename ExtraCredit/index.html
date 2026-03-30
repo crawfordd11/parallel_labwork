@@ -1,0 +1,62 @@
+<HTML>
+<HEAD>
+<TITLE></TITLE>
+</HEAD>
+
+<BODY bgcolor="#9999bb" text="#000000">
+<P>
+
+<table bgcolor="#ffffff" border=1 width="780" cellpadding="5" cellspacing="0" bordercolor=gray>
+<tr><td>
+<FONT style="font-size:10pt" face="Arial">
+<H2> Assignment: Mandelbrot (for Extra Credit)</H2>
+In this assignment you are to write a C program that computes the Mandelbrot set using a hybrid parallel programing model (MPI+OpenMP):
+<OL>
+    <LI> I recommend starting with the serial Mandelbrot code included here.
+    <LI> For this work, your code <B>MUST use OpenMP and MPI</B> to parallelize the Mandelbrot set.
+    <LI> Verify that your code produces the correct output (the correct area of the Mandelbrot) .
+    <LI> Create a PDF file with a write-up that includes information about the hybrid algorithm that you used, 
+         see the Expected Result section below. 
+</OL>
+<P>
+Using a <B>hybrid MPI+OpenMP</B> approach to parallel and distributed computing is very common in a supercomputer environment. 
+It allows for easy communication between nodes using MPI without sacrificing the ease of using OpenMP for node level 
+parallelism. In addition, computing the Mandelbrot set presents a significant challenge due to the nature of the calculation.
+<P>
+Typically, one uses a single MPI rank per node to facilitate communication between nodes and OpenMP to 
+utilize all the codes on each node. Use this approach when solving this problem.
+Because the result is a grayscale image of the Mandelbrot set, make sure you use the provided image tools C++ code 
+that we used during the lectures. This code will write the matrix that you calculate to an image that you can download and viewed locally.
+Use what you have learned this semester to achieve that fastest calculation you can while ensuring that each node does approximately the same amount of work.
+<P>
+<H3>Expected Result</H3>
+In your PDF writeup:
+<UL>
+    <LI> Describe the algorithm that you used to solve the problem. 
+    <LI> Include your final Mandelbrot set image.
+        <LI> Time your application (excluding the saving of your final JPG image) and create a strong scaling plot. <BR>
+        <i>(Strong scaling concerns the speedup for a fixed problem size with respect to the number of processors).</i>
+        Use 2 to 12 OpenMP threads per node and vary the number of nodes to create the plot.
+    <LI> There is no need to use TAU profiling.
+</UL>
+<P>
+<HR>
+IGNORE EVERYTHING BELOW:<BR>
+
+Please note that openCV is only installed on the head node, so, do not use the matToImage() when running your code on the cluster.
+<UL>
+<LI> So, to run your program localy and create the mandelbrot image, use the included makefile.
+<LI> To run your program on the cluster, compile your program using the following line and do not include any calls to the matToImage()
+</UL>
+<code>
+
+ mpicc mandelbrot.c -o mandelbrot.cx -lm -fopenmp -lstdc++
+</code>
+
+</FONT>
+</td></tr>
+</table>
+
+
+</BODY>
+</HTML>
