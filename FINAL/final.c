@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include <omp.h>
 
 extern void matToImage(char* filename, int* mat, int* dims);
 extern void matToImageColor(char* filename, int* mat, int* dims);
@@ -24,6 +25,7 @@ int main(int argc, char **argv){
 
     int idx,iter;
 
+    #pragma omp parallel for private(x0,y0,x,y,iter,idx) schedule(dynamic)
     for(int i=0;i<ny;i++){
         for(int j=0;j<nx;j++){
             idx=i*nx+j;
