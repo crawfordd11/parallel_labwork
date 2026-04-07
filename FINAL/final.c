@@ -7,8 +7,8 @@ extern void matToImage(char* filename, int* mat, int* dims);
 extern void matToImageColor(char* filename, int* mat, int* dims);
 
 int main(int argc, char **argv){
-    int nx=600;
-    int ny=400;
+    int nx=600*20;
+    int ny=400*20;
     int* matrix=(int*)malloc(nx*ny*sizeof(int));
 
     int maxIter=255;
