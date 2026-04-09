@@ -1,0 +1,7 @@
+[sc1:3150694] *** Process received signal ***
+[sc1:3150694] Signal: Segmentation fault (11)
+[sc1:3150694] Signal code: Address not mapped (1)
+[sc1:3150694] Failing at address: 0x71dee5e51d10
+[sc1:3150694] [ 0] /lib/x86_64-linux-gnu/libc.so.6(+0x45330)[0x71f540445330]
+[sc1:3150694] [ 1] /home/crawfordd1/Labs/ExtraCredit/./mandelbrot.cx[0x402ade]
+[sc1:3150694] [ 2] srun: error: sc1: task 0: Segmentation fault (core dumped)

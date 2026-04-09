@@ -1,0 +1,11 @@
+[sc1:3151354] *** Process received signal ***
+[sc1:3151354] Signal: Segmentation fault (11)
+[sc1:3151354] Signal code: Address not mapped (1)
+[sc1:3151354] Failing at address: 0x7d5a2ffd3d10
+[sc1:3151354] [ 0] /lib/x86_64-linux-gnu/libc.so.6(+0x45330)[0x7d624d845330]
+[sc1:3151354] [ 1] /home/crawfordd1/Labs/ExtraCredit/./mandelbrot.cx[0x402ade]
+[sc1:3151354] [ 2] /lib/x86_64-linux-gnu/libgomp.so.1(+0x2279f)[0x7d624dad879f]
+[sc1:3151354] [ 3] /lib/x86_64-linux-gnu/libc.so.6(+0x9caa4)[0x7d624d89caa4]
+[sc1:3151354] [ 4] /lib/x86_64-linux-gnu/libc.so.6(+0x129c6c)[0x7d624d929c6c]
+[sc1:3151354] *** End of error message ***
+srun: error: sc1: task 0: Segmentation fault (core dumped)
