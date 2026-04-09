@@ -1,0 +1,4 @@
+Work took 19.813948 seconds
+Number of threads: 80
+Image dimensions: 24000 x 16000
+Area of Mandelbrot set = 1.521727
