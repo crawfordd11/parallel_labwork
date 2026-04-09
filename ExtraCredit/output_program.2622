@@ -1,0 +1,33 @@
+[sc4:3190884] *** Process received signal ***
+[sc4:3190884] Signal: Segmentation fault (11)
+[sc4:3190884] Signal code: Address not mapped (1)
+[sc4:3190884] Failing at address: 0x7476bfe09540
+[sc4:3190884] [ 0] /lib/x86_64-linux-gnu/libc.so.6(+0x45330)[0x747afe245330]
+[sc4:3190884] [ 1] /lib/x86_64-linux-gnu/libc.so.6(+0x198c89)[0x747afe398c89]
+[sc4:3190884] [ 2] /opt/sw/openmpi/lib/libopen-pal.so.80(mca_btl_tcp_frag_recv+0x1bd)[0x747afd4a4c2d]
+[sc4:3190884] [ 3] /opt/sw/openmpi/lib/libopen-pal.so.80(+0xe8b9b)[0x747afd4a2b9b]
+[sc4:3190884] [ 4] /lib/x86_64-linux-gnu/libevent_core-2.1.so.7(+0x1f38c)[0x747afd3a438c]
+[sc4:3190884] [ 5] /lib/x86_64-linux-gnu/libevent_core-2.1.so.7(event_base_loop+0x4af)[0x747afd3a5faf]
+[sc4:3190884] [ 6] /opt/sw/openmpi/lib/libopen-pal.so.80(+0x2422f)[0x747afd3de22f]
+[sc4:3190884] [ 7] /opt/sw/openmpi/lib/libopen-pal.so.80(opal_progress+0x84)[0x747afd3de2e4]
+[sc4:3190884] [ 8] /opt/sw/openmpi/lib/libmpi.so.40(mca_pml_ob1_recv+0x320)[0x747afe752ca0]
+[sc4:3190884] [ 9] /opt/sw/openmpi/lib/libmpi.so.40(mca_coll_basic_gatherv_intra+0x18a)[0x747afe67665a]
+[sc4:3190884] [10] /opt/sw/openmpi/lib/libmpi.so.40(PMPI_Gatherv+0x83)[0x747afe5c13c3]
+[sc4:3190884] [11] /home/crawfordd1/Labs/ExtraCredit/./mandelbrot.cx[0x40283e]
+[sc4:3190884] [12] /lib/x86_64-linux-gnu/libc.so.6(+0x2a1ca)[0x747afe22a1ca]
+[sc4:3190884] [13] /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0x8b)[0x747afe22a28b]
+[sc4:3190884] [14] /home/crawfordd1/Labs/ExtraCredit/./mandelbrot.cx[0x4022e5]
+[sc4:3190884] *** End of error message ***
+[sc14][[28357,0],10][btl_tcp_frag.c:127:mca_btl_tcp_frag_send] peer: unknown mca_btl_tcp_frag_send: writev failed: Connection reset by peer (104)
+srun: error: sc4: task 0: Segmentation fault (core dumped)
+srun: Job step aborted: Waiting up to 32 seconds for job step to finish.
+srun: error: sc8: task 4: Exited with exit code 14
+srun: error: sc7: task 3: Exited with exit code 14
+srun: error: sc10: task 6: Exited with exit code 14
+srun: error: sc11: task 7: Exited with exit code 14
+srun: error: sc6: task 2: Exited with exit code 14
+srun: error: sc5: task 1: Exited with exit code 14
+srun: error: sc9: task 5: Exited with exit code 14
+srun: error: sc13: task 9: Exited with exit code 14
+srun: error: sc12: task 8: Exited with exit code 14
+srun: error: sc14: task 10: Exited with exit code 14

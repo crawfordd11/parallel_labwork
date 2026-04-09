@@ -1,0 +1,15 @@
+Submitted job with 2 ranks (job ID: 2613)
+Submitted job with 3 ranks (job ID: 2614)
+Submitted job with 4 ranks (job ID: 2615)
+Submitted job with 5 ranks (job ID: 2616)
+Submitted job with 6 ranks (job ID: 2617)
+Submitted job with 7 ranks (job ID: 2618)
+Submitted job with 8 ranks (job ID: 2619)
+Submitted job with 9 ranks (job ID: 2620)
+Submitted job with 10 ranks (job ID: 2621)
+Submitted job with 11 ranks (job ID: 2622)
+Submitted job with 12 ranks (job ID: 2623)
+Submitted jobs:
+squeue: error: Invalid user: crawfordd1
+
+All jobs submitted — SLURM will handle ordering
