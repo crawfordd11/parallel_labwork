@@ -26,4 +26,7 @@ for ranks in $(seq 2 12); do
     batch_last_job_id=$job_id
 done
 
+echo "Submitted jobs:"
+squeue -u $USER -o "%.18i %.9P %.8j %.8u %.2t %.10M %.6D %R" | grep "DaltonMandelbrot"
+
 echo "All jobs submitted — SLURM will handle ordering"

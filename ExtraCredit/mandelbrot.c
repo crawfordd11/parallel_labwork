@@ -56,8 +56,9 @@ int main(int argc, char **argv){
 
 	int local_delta = base + (rank < rem ? 1 : 0);
 	int i_start_rank = rank * base + (rank < rem ? rank : rem);
-	int i_end_rank = i_start_rank + local_delta;
+	int i_end_rank = ((i_start_rank + local_delta) > ny) ? ny : (i_start_rank + local_delta);
 	int local_count = local_delta * nx;
+
 
 	local_mat=(int*)malloc(local_count*sizeof(*local_mat));
 
@@ -66,11 +67,8 @@ int main(int argc, char **argv){
 		MPI_Abort(MPI_COMM_WORLD, 1);
 	}
 
-	int dummy_recv;
-
 	MPI_Gather(&local_count, 1, MPI_INT,
-			(rank == 0 ? recvcounts : &dummy_recv),
-			1, MPI_INT,
+			recvcounts, 1, MPI_INT,
 			0, MPI_COMM_WORLD);
 
 	if (rank == 0) {
