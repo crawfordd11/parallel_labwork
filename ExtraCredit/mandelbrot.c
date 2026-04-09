@@ -19,7 +19,7 @@ int main(int argc, char **argv){
 	int *recvcounts = NULL;
 	int *displs = NULL;
 
-	int size_modifier=8000;//enough prime factors to cover first ten ranks without breaking the size of int later on
+	int size_modifier=15015;//enough prime factors to cover first ten ranks without breaking the size of int later on
 	int nx=3*size_modifier; //cols
 	int ny=2*size_modifier; //rows
 	int maxiter=255;
