@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH --job-name=LeonMandelbrot
 #SBATCH --partition=batch
-#SBATCH --nodes=2
+#SBATCH --nodes=8
 #SBATCH --ntasks-per-node=1
 #SBATCH --cpus-per-task=16
 #SBATCH --time=00:00:20
