@@ -22,7 +22,12 @@ int main(int argc, char **argv){
 	int *recvcounts = NULL;
 	int *displs = NULL;
 
-	int size_modifier=60060;//enough prime factors to cover first ten ranks without breaking the size of int later on
+	if (argc < 2) {
+		if (rank == 0) printf("Usage: %s <size_modifier>\n", argv[0]);
+		MPI_Finalize();
+		return 1;
+	}
+	int size_modifier = ((atoi(argv[1]) < 200) || (atoi(argv[1]) > 20020) ? 200 : atoi(argv[1])); 
 	int nx=3*size_modifier; //cols
 	int ny=2*size_modifier; //rows
 	int maxiter=255;
