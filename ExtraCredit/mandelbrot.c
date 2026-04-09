@@ -4,6 +4,9 @@
 #include <mpi.h>
 
 extern void matToImage(char* filename, int* mat, int* dims);
+extern void matToImageBernstein(char* filename, int* mat, int* dims, int maxiter);
+extern void matToImageColor(char* filename, int* mat, int* dims);
+
 
 int main(int argc, char **argv){
 
