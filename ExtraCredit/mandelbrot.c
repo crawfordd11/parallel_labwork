@@ -19,7 +19,7 @@ int main(int argc, char **argv){
 	int *recvcounts = NULL;
 	int *displs = NULL;
 
-	int size_modifier=5*6*7*8*9;//enough prime factors to cover first ten ranks without breaking the size of int later on
+	int size_modifier=200;//enough prime factors to cover first ten ranks without breaking the size of int later on
 	int nx=3*size_modifier; //cols
 	int ny=2*size_modifier; //rows
 	int maxiter=255;
@@ -58,7 +58,7 @@ int main(int argc, char **argv){
 		MPI_Abort(MPI_COMM_WORLD, 1);
 	}
 
-	int dummy_recv;
+	int dummy_recv = NULL;
 
 	MPI_Gather(&local_count, 1, MPI_INT,
 			(rank == 0 ? recvcounts : &dummy_recv),
@@ -72,7 +72,8 @@ int main(int argc, char **argv){
 		}
 	}		
 
-	#pragma omp parallel for collapse(2) private(i_c,r_c,i_z,r_z,iter) reduction(+:numoutside) schedule(dynamic)
+	//collapse(2) is not implemented, but could be for potentially better load balancing.
+	#pragma omp parallel for private(i_c,r_c,i_z,r_z,iter) reduction(+:numoutside) schedule(dynamic, 16)
 	for(int i=i_start_rank;i<i_end_rank;i++){ //rows
 		for (int j=0;j<nx;j++){  //cols
 			i_c=i_start+i/(ny*1.0)*(i_end-i_start);
