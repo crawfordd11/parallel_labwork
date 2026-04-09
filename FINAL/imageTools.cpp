@@ -111,7 +111,7 @@ extern "C" void matToImageColor(char* filename, int* mat, int* dims){
                    case(9):
                         r=211;
                         g=236;
-                        r=248;
+                        b=248;
                         break;
                    case(10):
                         r=241;

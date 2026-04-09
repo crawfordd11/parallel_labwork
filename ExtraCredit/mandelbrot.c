@@ -19,7 +19,7 @@ int main(int argc, char **argv){
 	int *recvcounts = NULL;
 	int *displs = NULL;
 
-	int size_modifier=15015;//enough prime factors to cover first ten ranks without breaking the size of int later on
+	int size_modifier=13860;//enough prime factors to cover first ten ranks without breaking the size of int later on
 	int nx=3*size_modifier; //cols
 	int ny=2*size_modifier; //rows
 	int maxiter=255;
@@ -120,6 +120,8 @@ int main(int argc, char **argv){
 		printf("Image dimensions: %d x %d\n", nx, ny);
 		int dims[2] = {ny,nx};
 		matToImage("mandelbrot.jpg",full_matrix,dims);
+		matToImageBernstein("mandelbrot_bernstein.jpg",full_matrix,dims,maxiter);
+		matToImageColor("mandelbrot_color.jpg",full_matrix,dims);
 	}
 
 	//cleanup
