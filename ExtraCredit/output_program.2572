@@ -1,0 +1,3 @@
+srun: Job step aborted: Waiting up to 32 seconds for job step to finish.
+slurmstepd-sc2: error: *** JOB 2572 ON sc2 CANCELLED AT 2026-04-08T23:47:20 DUE TO TIME LIMIT ***
+slurmstepd-sc2: error: *** STEP 2572.0 ON sc2 CANCELLED AT 2026-04-08T23:47:20 DUE TO TIME LIMIT ***
