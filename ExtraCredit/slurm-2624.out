@@ -1,0 +1,20 @@
+Submitted job with 10 threads (job ID: 2625)
+Submitted job with 20 threads (job ID: 2626)
+Submitted job with 30 threads (job ID: 2627)
+Submitted job with 40 threads (job ID: 2628)
+Submitted job with 50 threads (job ID: 2629)
+Submitted job with 60 threads (job ID: 2630)
+Submitted job with 70 threads (job ID: 2631)
+Submitted job with 80 threads (job ID: 2632)
+Submitted jobs:
+All jobs submitted — SLURM will handle ordering
+             JOBID PARTITION     NAME     USER ST       TIME  NODES NODELIST(REASON)
+              2632     batch DaltonMa     5002 PD       0:00      8 (None)
+              2631     batch DaltonMa     5002 PD       0:00      8 (Dependency)
+              2630     batch DaltonMa     5002 PD       0:00      8 (None)
+              2629     batch DaltonMa     5002 PD       0:00      8 (None)
+              2628     batch DaltonMa     5002 PD       0:00      8 (Dependency)
+              2627     batch DaltonMa     5002 PD       0:00      8 (None)
+              2626     batch DaltonMa     5002 PD       0:00      8 (None)
+              2625     batch DaltonMa     5002 PD       0:00      8 (None)
+              2624     batch bulksubm     5002  R       0:49      1 sc1
