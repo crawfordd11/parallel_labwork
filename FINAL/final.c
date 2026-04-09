@@ -25,9 +25,12 @@ int main(int argc, char **argv){
 
     int idx,iter;
 
+    double area;
+    int numoutside=0;
+
     double start = omp_get_wtime(); 
 
-    #pragma omp parallel for private(x0,y0,x,y,iter,idx) schedule(dynamic)
+    #pragma omp parallel for collapse(2) private(x0,y0,x,y,iter,idx) reduction(+:numoutside) schedule(dynamic)
     for(int i=0;i<ny;i++){
         for(int j=0;j<nx;j++){
             idx=i*nx+j;
@@ -47,6 +50,7 @@ int main(int argc, char **argv){
 
                 //check the value
                 if(x*x+y*y>4){
+                    numoutside=numoutside+1;
                     break;
                 }
 
@@ -57,6 +61,8 @@ int main(int argc, char **argv){
         }
     }
 
+    area=(xEnd-xStart)*(yEnd-yStart)*(1.0*nx*ny-numoutside)/(1.0*nx*ny);
+
     int dims[2];
     dims[0]=ny;
     dims[1]=nx;
@@ -65,6 +71,7 @@ int main(int argc, char **argv){
     printf("Work took %f seconds\n", end - start);
     printf("Number of threads: %d\n", omp_get_max_threads());
     printf("Image dimensions: %d x %d\n", nx, ny);
+    printf("Area of Mandelbrot set = %f\n",area);
 
     matToImage("mandelbrot.jpg", matrix, dims);
     free(matrix);
