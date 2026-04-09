@@ -6,9 +6,7 @@
 extern void matToImage(char* filename, int* mat, int* dims);
 extern void matToImageColor(char* filename, int* mat, int* dims);
 
-double start; 
-double end; 
-start = omp_get_wtime(); 
+
 
 int main(int argc, char **argv){
     int nx=600*20;
@@ -28,6 +26,8 @@ int main(int argc, char **argv){
     double y=0;
 
     int idx,iter;
+
+    double start = omp_get_wtime(); 
 
     #pragma omp parallel for private(x0,y0,x,y,iter,idx) schedule(dynamic)
     for(int i=0;i<ny;i++){
@@ -63,7 +63,7 @@ int main(int argc, char **argv){
     dims[0]=ny;
     dims[1]=nx;
     
-    end = omp_get_wtime(); 
+    double end = omp_get_wtime(); 
     printf("Work took %f seconds\n", end - start);
     printf("Number of threads: %d\n", omp_get_max_threads());
     printf("Image dimensions: %d x %d\n", nx, ny);
