@@ -48,7 +48,7 @@ extern "C" int* imageToMat(char* filename,int* dims){
     return matrix;
 }
 
-
+//UltraFractal 16-color pallete
 extern "C" void matToImageColor(char* filename, int* mat, int* dims){
     int height=dims[0];
     int width=dims[1];
@@ -163,6 +163,36 @@ extern "C" void matToImageColor(char* filename, int* mat, int* dims){
     return;
 
 }
+
+//Bernstein polynomial color scheme
+extern "C" void matToImageBernstein(char* filename, int* mat, int* dims, int maxiter){
+    int height = dims[0];
+    int width  = dims[1];
+    Mat image(height, width, CV_8UC3, Scalar(0,0,0));
+
+    for(int i = 0; i < height; i++){
+        for(int j = 0; j < width; j++){
+            int iter = mat[i*width+j];
+            int r = 0, g = 0, b = 0;
+
+            if(iter < maxiter && iter > 0){
+                double t = (double)iter / maxiter;
+                r = (int)(9  * t * pow(1-t,3)       * 255);
+                g = (int)(15 * pow(t,2) * pow(1-t,2) * 255);
+                b = (int)(8.5* pow(t,3) * (1-t)      * 255);
+            }
+            // iter == maxiter → stays black (inside the set)
+            // iter == 0       → stays black
+
+            image.at<Vec3b>(i,j)[0] = b;
+            image.at<Vec3b>(i,j)[1] = g;
+            image.at<Vec3b>(i,j)[2] = r;
+        }
+    }
+
+    imwrite(filename, image);
+}
+
 extern "C" void matToImage(char* filename, int* mat, int* dims){
      int height=dims[0];
     int width=dims[1];
