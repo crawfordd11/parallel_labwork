@@ -58,8 +58,11 @@ int main(int argc, char **argv){
 		MPI_Abort(MPI_COMM_WORLD, 1);
 	}
 
+	int dummy_recv;
+
 	MPI_Gather(&local_count, 1, MPI_INT,
-			recvcounts, 1, MPI_INT,
+			(rank == 0 ? recvcounts : &dummy_recv),
+			1, MPI_INT,
 			0, MPI_COMM_WORLD);
 
 	if (rank == 0) {
@@ -68,8 +71,6 @@ int main(int argc, char **argv){
 			displs[i] = displs[i-1] + recvcounts[i-1];
 		}
 	}		
-
-	
 
 	#pragma omp parallel for collapse(2) private(i_c,r_c,i_z,r_z,iter) reduction(+:numoutside) schedule(dynamic)
 	for(int i=i_start_rank;i<i_end_rank;i++){ //rows
@@ -97,8 +98,11 @@ int main(int argc, char **argv){
 	MPI_Reduce(&numoutside, &global_outside, 1, MPI_INT, MPI_SUM, 0, MPI_COMM_WORLD);
 
 	MPI_Gatherv(local_mat, local_delta * nx, MPI_INT,
-            full_matrix, recvcounts, displs, MPI_INT,
-            0, MPI_COMM_WORLD);
+				(rank == 0 ? full_matrix : NULL),
+				(rank == 0 ? recvcounts : NULL),
+				(rank == 0 ? displs : NULL),
+				MPI_INT,
+				0, MPI_COMM_WORLD);
 
 	if(rank == 0){
 		area = (r_end - r_start)*(i_end - i_start) * (1.0*nx*ny - global_outside)/(1.0*nx*ny);
