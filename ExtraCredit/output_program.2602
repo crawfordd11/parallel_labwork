@@ -1,3 +1,0 @@
-slurmstepd-sc4: error: *** JOB 2602 ON sc4 CANCELLED AT 2026-04-09T14:23:39 DUE TO TIME LIMIT ***
-srun: Job step aborted: Waiting up to 32 seconds for job step to finish.
-slurmstepd-sc4: error: *** STEP 2602.0 ON sc4 CANCELLED AT 2026-04-09T14:23:39 DUE TO TIME LIMIT ***
