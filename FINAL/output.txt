@@ -1,3 +1,0 @@
-Work took 0.807147 seconds
-Number of threads: 80
-Image dimensions: 12000 x 8000
