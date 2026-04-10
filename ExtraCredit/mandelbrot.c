@@ -128,6 +128,7 @@ int main(int argc, char **argv){
 		matToImage("mandelbrot.jpg",full_matrix,dims);
 		matToImageBernstein("mandelbrot_bernstein.jpg",full_matrix,dims,maxiter);
 		matToImageColor("mandelbrot_color.jpg",full_matrix,dims);
+		printf("Images saved as mandelbrot.jpg, mandelbrot_bernstein.jpg, and mandelbrot_color.jpg\n");
 	}
 
 	//cleanup
