@@ -1,0 +1,6 @@
+I added the line of code to the final, and then I went and added additional code, but I did all my real gathering and testing in the ExtraCredit. 
+I will write an actual report and organize the data there and repost it here. 
+
+This code was useful for testing the image size, and practice. Thank you for including the to-color function. I added a different color pallet so it can be viewed from both. I hope that it gets reused.
+
+Thank you for leading this course and teaching in inspiring ways. This course made me excited again about the science of computer science.
