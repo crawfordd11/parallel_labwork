@@ -124,10 +124,10 @@ int main(int argc, char **argv){
 		printf("Number of threads: %d\n", omp_get_max_threads());
 		printf("Number of ranks: %d\n", numranks);
 		printf("Image dimensions: %d x %d\n", nx, ny);
-		// int dims[2] = {ny,nx};
-		// matToImage("mandelbrot.jpg",full_matrix,dims);
-		// matToImageBernstein("mandelbrot_bernstein.jpg",full_matrix,dims,maxiter);
-		// matToImageColor("mandelbrot_color.jpg",full_matrix,dims);
+		int dims[2] = {ny,nx};
+		matToImage("mandelbrot.jpg",full_matrix,dims);
+		matToImageBernstein("mandelbrot_bernstein.jpg",full_matrix,dims,maxiter);
+		matToImageColor("mandelbrot_color.jpg",full_matrix,dims);
 	}
 
 	//cleanup

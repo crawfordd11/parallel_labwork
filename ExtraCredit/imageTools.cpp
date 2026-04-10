@@ -1,6 +1,7 @@
 #include <iostream>
 #include <cmath>
 #include <opencv2/opencv.hpp>
+#include <omp.h>
 
 using namespace cv;
 using namespace std;
@@ -54,6 +55,7 @@ extern "C" void matToImageColor(char* filename, int* mat, int* dims){
     int width=dims[1];
     Mat image(height, width, CV_8UC3, Scalar(0,0,0));
 
+    #pragma omp parallel for private(i,j,r,g,b) collapse(2)
     for(int i=0;i<height;i++){
         for(int j=0;j<width;j++){
             int r=0;
@@ -170,6 +172,7 @@ extern "C" void matToImageBernstein(char* filename, int* mat, int* dims, int max
     int width  = dims[1];
     Mat image(height, width, CV_8UC3, Scalar(0,0,0));
 
+    #pragma omp parallel for private(i,j,r,g,b) collapse(2) // Parallelize the nested loops
     for(int i = 0; i < height; i++){
         for(int j = 0; j < width; j++){
             int iter = mat[i*width+j];
@@ -198,6 +201,7 @@ extern "C" void matToImage(char* filename, int* mat, int* dims){
     int width=dims[1];
     Mat image(height, width, CV_8UC1, Scalar(0,0,0));
 
+    #pragma omp parallel for private(i,j) collapse(2)
     for(int i=0;i<height;i++){
         for(int j=0;j<width;j++){
             image.at<uchar>(i,j) = (int)mat[i*width+j];
